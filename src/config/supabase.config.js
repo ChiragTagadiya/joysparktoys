@@ -16,6 +16,10 @@
 export const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL || '';
 export const SUPABASE_ANON_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY || '';
 
+// Optional: override the redirect URL used in Supabase auth emails
+// e.g. VITE_SITE_URL=https://littlejoy.netlify.app
+export const SITE_URL = import.meta.env.VITE_SITE_URL || (typeof window !== 'undefined' ? window.location.origin : '');
+
 export const SUPABASE_CONFIGURED = Boolean(SUPABASE_URL && SUPABASE_ANON_KEY);
 
 if (!SUPABASE_CONFIGURED) {

@@ -1,5 +1,6 @@
 import { createContext, useContext, useState, useEffect, useCallback } from 'react';
 import { supabase } from '../lib/supabase';
+import { SITE_URL } from '../config/supabase.config';
 
 const AuthContext = createContext(null);
 
@@ -47,7 +48,10 @@ export const AuthProvider = ({ children }) => {
     const { data, error } = await supabase.auth.signUp({
       email,
       password,
-      options: { data: { name } },
+      options: {
+        data: { name },
+        emailRedirectTo: `${SITE_URL}/login`,
+      },
     });
     if (error) { setAuthError(error.message); return false; }
     if (data.user && !data.session) {
