@@ -98,7 +98,7 @@ const AuthModal = ({ isOpen, onClose, defaultTab = 'login' }) => {
               <X size={20} style={{ color: theme.text }} />
             </button>
             <div className="text-center mb-4">
-              <span className="text-4xl block mb-2">🧸</span>
+              <img src="/logo.png" alt="Little Joy Toys" className="h-16 w-auto mx-auto mb-2" />
               <h2 className="text-2xl font-black" style={{ background: theme.gradient, WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
                 Little Joy
               </h2>

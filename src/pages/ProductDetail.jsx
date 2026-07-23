@@ -194,6 +194,7 @@ const ProductDetail = () => {
                 icon={ShoppingCart}
                 onClick={handleAddToCart}
                 disabled={product.stock === 0}
+                glow
               >
                 Add to Cart
               </Button>

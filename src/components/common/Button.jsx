@@ -21,6 +21,7 @@ const Button = ({
   children, onClick, variant = 'primary', size = 'md',
   disabled = false, loading = false, fullWidth = false,
   className = '', type = 'button', icon: Icon, iconRight: IconRight,
+  glow = false,
 }) => {
   const { theme } = useTheme();
 
@@ -43,15 +44,21 @@ const Button = ({
       disabled={disabled || loading}
       whileHover={{ scale: disabled || loading ? 1 : 1.02 }}
       whileTap={{ scale: disabled || loading ? 1 : 0.97 }}
+      animate={glow && !disabled && !loading ? { boxShadow: [`0 0 0 0 ${theme.primary}80`, `0 0 0 14px ${theme.primary}00`] } : {}}
+      transition={{ duration: 1.2, repeat: Infinity, ease: 'easeInOut' }}
       className={`
         inline-flex items-center justify-center gap-2 font-semibold transition-all duration-200
         ${SIZES[size]} ${VARIANTS[variant]} ${getHoverClass()}
         ${fullWidth ? 'w-full' : ''}
         ${disabled || loading ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}
+        ${glow ? 'relative overflow-hidden' : ''}
         ${className}
       `}
       style={getStyle()}
     >
+      {glow && !disabled && !loading && (
+        <span className="absolute inset-0 -translate-x-full animate-[shimmer_2s_infinite]" style={{ background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.35), transparent)' }} />
+      )}
       {loading ? (
         <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
       ) : Icon ? (

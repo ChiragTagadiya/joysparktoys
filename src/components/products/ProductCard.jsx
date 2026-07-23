@@ -10,6 +10,7 @@ import { getProductRoute } from '../../constants/routes';
 import { isOnSale } from '../../services/products.service';
 import StarRating from '../common/StarRating';
 import Badge from '../common/Badge';
+import Button from '../common/Button';
 
 const ProductCard = ({ product }) => {
   const { theme } = useTheme();
@@ -111,20 +112,19 @@ const ProductCard = ({ product }) => {
         </motion.div>
 
         {/* Add to Cart Overlay */}
-        <motion.div
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: hovered ? 1 : 0, y: hovered ? 0 : 10 }}
-          className="absolute bottom-0 left-0 right-0 p-3"
-        >
-          <button
+        <div className="absolute bottom-0 left-0 right-0 p-3">
+          <Button
             onClick={handleAddToCart}
             disabled={isOOS}
-            className="w-full py-2.5 rounded-2xl text-sm font-bold text-white flex items-center justify-center gap-2 transition-all active:scale-95 disabled:opacity-50"
-            style={{ background: isOOS ? '#9CA3AF' : theme.gradient }}
+            fullWidth
+            size="sm"
+            icon={isOOS ? undefined : ShoppingCart}
+            glow={!isOOS}
+            className="!rounded-2xl !font-bold"
           >
-            {isOOS ? 'Out of Stock' : <><ShoppingCart size={15} /> Add to Cart</>}
-          </button>
-        </motion.div>
+            {isOOS ? 'Out of Stock' : 'Add to Cart'}
+          </Button>
+        </div>
       </div>
 
       {/* Info */}

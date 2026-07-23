@@ -492,9 +492,12 @@ const Admin = () => {
                                     />
                                     <div className="flex-1 min-w-0">
                                       <p className="font-bold text-sm line-clamp-1" style={{ color: theme.text }}>{item?.name || 'Product'}</p>
-                                      <p className="text-xs mt-0.5" style={{ color: theme.textMuted }}>
-                                        Total Qty: {totalQty}
-                                      </p>
+                                      <div className="inline-flex items-center gap-2 mt-2">
+                                        <span className="text-[10px] font-bold uppercase tracking-wider" style={{ color: theme.textMuted }}>Total Qty</span>
+                                        <span className="text-2xl font-black px-3 py-0.5 rounded-xl" style={{ background: theme.primary, color: '#fff' }}>
+                                          {totalQty}
+                                        </span>
+                                      </div>
                                       {Array.isArray(item?.images) && item.images.length > 1 && (
                                         <div className="flex gap-1.5 mt-2 overflow-x-auto scrollbar-hide">
                                           {item.images.slice(0, 5).map((u, idx) => (
@@ -513,7 +516,7 @@ const Admin = () => {
                                     <div className="mt-3 pl-2 border-l-2 space-y-1.5" style={{ borderColor: theme.border }}>
                                       {lines.map((ln, idx) => (
                                         <div key={idx} className="flex items-center justify-between text-xs">
-                                          <span style={{ color: theme.textMuted }}>Line {idx + 1}: Qty {ln.quantity}</span>
+                                          <span style={{ color: theme.textMuted }}>Line {idx + 1}: <span className="text-lg font-black" style={{ color: theme.primary }}>{ln.quantity}</span></span>
                                           <span className="font-bold" style={{ color: theme.text }}>{formatPrice((ln.price || 0) * (ln.quantity || 0))}</span>
                                         </div>
                                       ))}
