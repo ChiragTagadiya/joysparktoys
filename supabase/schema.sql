@@ -77,16 +77,15 @@ CREATE TABLE IF NOT EXISTS orders (
   items           JSONB NOT NULL DEFAULT '[]',
   address         JSONB NOT NULL DEFAULT '{}',
   payment_method  TEXT NOT NULL DEFAULT 'cod',
-  status          TEXT NOT NULL DEFAULT 'confirmed'
+  status          TEXT NOT NULL DEFAULT 'placed'
                     CHECK (status IN (
-                      'confirmed', 'in_progress', 'processing',
-                      'shipped', 'delivered', 'cancelled', 'return'
+                      'placed', 'confirmed', 'processing',
+                      'shipped', 'delivered', 'cancelled'
                     )),
   subtotal        NUMERIC(10, 2) NOT NULL,
   shipping        NUMERIC(10, 2) DEFAULT 0,
   total           NUMERIC(10, 2) NOT NULL,
   notes           TEXT,
-  expected_delivery_date TIMESTAMPTZ,
   created_at      TIMESTAMPTZ DEFAULT NOW(),
   updated_at      TIMESTAMPTZ DEFAULT NOW()
 );
