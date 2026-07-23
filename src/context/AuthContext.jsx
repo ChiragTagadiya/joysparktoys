@@ -50,7 +50,7 @@ export const AuthProvider = ({ children }) => {
       password,
       options: {
         data: { name },
-        emailRedirectTo: `${SITE_URL}/login`,
+        emailRedirectTo: `${SITE_URL}/`,
       },
     });
     if (error) { setAuthError(error.message); return false; }
