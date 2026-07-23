@@ -94,25 +94,25 @@ const AnnouncementBar = () => {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
             transition={{ duration: 0.35 }}
-            className="text-sm sm:text-base font-black tracking-wide truncate"
+            className="text-xs sm:text-sm font-black tracking-wide truncate"
           >
             {item?.emoji && (
               <motion.span
-                className="mr-2 inline-block"
+                className="mr-1 sm:mr-2 inline-block shrink-0"
                 animate={{ rotate: [0, -6, 6, 0], scale: [1, 1.08, 1, 1.04, 1] }}
                 transition={{ duration: 1.8, repeat: Infinity, ease: 'easeInOut' }}
               >
                 {item.emoji}
               </motion.span>
             )}
-            <span className="inline-flex items-center gap-2">
-              <span className="px-2 py-0.5 rounded-full text-[10px] font-black" style={{ background: 'rgba(0,0,0,0.25)' }}>
+            <span className="inline-flex items-center gap-1 sm:gap-2 truncate">
+              <span className="hidden sm:inline-block px-2 py-0.5 rounded-full text-[10px] font-black shrink-0" style={{ background: 'rgba(0,0,0,0.25)' }}>
                 {(item?.type || 'info').replace(/_/g, ' ').toUpperCase()}
               </span>
-              <span>{item?.text}</span>
+              <span className="truncate">{item?.text}</span>
             </span>
             {item?.link && (
-              <a href={item.link} className="ml-2 underline underline-offset-4 opacity-90 font-black">Shop →</a>
+              <a href={item.link} className="hidden sm:inline ml-2 underline underline-offset-4 opacity-90 font-black shrink-0">Shop →</a>
             )}
           </motion.p>
         </AnimatePresence>
