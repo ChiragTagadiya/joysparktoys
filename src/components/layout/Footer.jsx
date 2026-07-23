@@ -5,8 +5,6 @@ import appConfig from '../../config/app.config';
 import { ROUTES } from '../../constants/routes';
 
 const InstagramIcon = () => (<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>);
-const FacebookIcon = () => (<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>);
-const YoutubeIcon = () => (<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46a2.78 2.78 0 0 0-1.95 1.96A29 29 0 0 0 1 12a29 29 0 0 0 .46 5.58A2.78 2.78 0 0 0 3.41 19.6C5.12 20 12 20 12 20s6.88 0 8.59-.4a2.78 2.78 0 0 0 1.95-1.96A29 29 0 0 0 23 12a29 29 0 0 0-.46-5.58z"/><polygon points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02"/></svg>);
 
 const Footer = () => {
   const { theme } = useTheme();
@@ -45,25 +43,19 @@ const Footer = () => {
           {/* Brand */}
           <div>
             <div className="flex items-center gap-2 mb-4">
-              <span className="text-3xl">🧸</span>
+              <img src="/logo.png" alt="Little Joy Toys" className="h-10 w-auto" />
               <span className="text-2xl font-black" style={{ background: theme.gradient, WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
                 {appConfig.appName}
               </span>
             </div>
             <p className="text-sm text-gray-400 mb-4 leading-relaxed">{appConfig.tagline} — Your one-stop shop for quality toys that inspire creativity, learning, and joy for kids across India.</p>
             <div className="flex gap-3">
-              {[
-                { href: appConfig.socialLinks.instagram, icon: InstagramIcon, color: '#E91E8C' },
-                { href: appConfig.socialLinks.facebook, icon: FacebookIcon, color: '#1877F2' },
-                { href: appConfig.socialLinks.youtube, icon: YoutubeIcon, color: '#FF0000' },
-              ].map(({ href, icon: Icon, color }) => (
-                <a key={href} href={href} target="_blank" rel="noopener noreferrer"
-                  className="p-2.5 rounded-full transition-all hover:scale-110"
-                  style={{ background: `${color}20`, color }}
-                >
-                  <Icon />
-                </a>
-              ))}
+              <a href={appConfig.socialLinks.instagram} target="_blank" rel="noopener noreferrer"
+                className="p-2.5 rounded-full transition-all hover:scale-110"
+                style={{ background: '#E91E8C20', color: '#E91E8C' }}
+              >
+                <InstagramIcon />
+              </a>
             </div>
           </div>
 

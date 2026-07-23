@@ -54,3 +54,9 @@ img {
   max-width: 100%;
   display: block;
 }
+
+/* Shimmer sweep animation for Add to Cart button */
+@keyframes shimmer {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}

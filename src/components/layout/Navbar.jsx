@@ -71,7 +71,7 @@ const Navbar = ({ onCartOpen, onAuthOpen }) => {
 
           {/* Logo */}
           <Link to={ROUTES.HOME} className="flex items-center gap-2 shrink-0">
-            <span className="text-3xl select-none">🧸</span>
+            <img src="/logo.png" alt="Little Joy Toys" className="h-10 w-auto" />
             <div className="leading-none">
               <span className="text-xl font-black" style={{ background: theme.gradient, WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
                 {appConfig.appName}
