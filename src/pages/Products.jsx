@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { SlidersHorizontal, X, Search, Heart } from 'lucide-react';
@@ -11,7 +11,7 @@ import Button from '../components/common/Button';
 
 const Products = () => {
   const { theme } = useTheme();
-  const { filteredProducts, searchQuery, setSearchQuery, selectedCategory, resetFilters } = useProducts();
+  const { filteredProducts, searchQuery, setSearchQuery, selectedCategory, sortBy, filters, resetFilters } = useProducts();
   const { wishlist } = useCart();
   const [searchParams, setSearchParams] = useSearchParams();
   const [showFilters, setShowFilters] = useState(false);
@@ -21,6 +21,10 @@ const Products = () => {
     ? filteredProducts.filter((p) => wishlist.includes(p.id))
     : filteredProducts;
   const hasFilters = searchQuery || selectedCategory || showWishlist;
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }, [selectedCategory, sortBy, filters, searchQuery, showWishlist]);
 
   return (
     <div className="min-h-screen pt-20 pb-16" style={{ background: theme.bg }}>

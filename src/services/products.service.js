@@ -35,6 +35,8 @@ const toDb = (p) => ({
   featured: Boolean(p.featured),
   best_seller: Boolean(p.bestSeller),
   new_arrival: Boolean(p.newArrival),
+  rating: p.rating != null ? Number(p.rating) : 0,
+  review_count: p.reviewCount != null ? Number(p.reviewCount) : 0,
   discount_start: p.discountStart || null,
   discount_end: p.discountEnd || null,
   discount_label: p.discountLabel || null,
