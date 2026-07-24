@@ -156,7 +156,7 @@ const Navbar = ({ onCartOpen, onAuthOpen }) => {
             <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              onClick={() => navigate(ROUTES.PRODUCTS)}
+              onClick={() => navigate(`${ROUTES.PRODUCTS}?wishlist=true`)}
               className="relative p-2 rounded-full transition-colors hover:bg-black/5"
               style={{ color: theme.primary }}
             >

@@ -5,9 +5,8 @@ import { Heart, ShoppingCart, Eye, Zap } from 'lucide-react';
 import { useTheme } from '../../context/ThemeContext';
 import { useCart } from '../../context/CartContext';
 import { useToast } from '../../context/ToastContext';
-import { formatPrice, formatDiscount } from '../../utils/formatters';
+import { formatPrice } from '../../utils/formatters';
 import { getProductRoute } from '../../constants/routes';
-import { isOnSale } from '../../services/products.service';
 import StarRating from '../common/StarRating';
 import Badge from '../common/Badge';
 import Button from '../common/Button';
@@ -20,10 +19,8 @@ const ProductCard = ({ product }) => {
   const [imgLoaded, setImgLoaded] = useState(false);
   const [hovered, setHovered] = useState(false);
 
-  const discount = formatDiscount(product.originalPrice, product.price);
   const inWishlist = isInWishlist(product.id);
   const isOOS = product.stock === 0;
-  const saleLive = isOnSale(product);
 
   const handleAddToCart = (e) => {
     e.stopPropagation();
@@ -73,13 +70,6 @@ const ProductCard = ({ product }) => {
 
         {/* Badges */}
         <div className="absolute top-3 left-3 flex flex-col gap-1.5">
-          {saleLive && product.discountLabel && (
-            <span className="px-2 py-0.5 rounded-full text-[10px] font-black text-white animate-pulse" style={{ background: '#EF4444' }}>
-              🔥 {product.discountLabel}
-            </span>
-          )}
-          {discount > 0 && !saleLive && <Badge type="sale">{discount}% OFF</Badge>}
-          {discount > 0 && saleLive && <Badge type="sale">{discount}% OFF</Badge>}
           {product.bestSeller && <Badge type="best">Best Seller</Badge>}
           {product.newArrival && !product.bestSeller && <Badge type="hot">🆕 New</Badge>}
           {product.featured && !product.bestSeller && !product.newArrival && <Badge type="hot">🔥 Hot</Badge>}
@@ -142,7 +132,7 @@ const ProductCard = ({ product }) => {
           <div className="flex items-baseline gap-1.5">
             <span className="text-lg font-black" style={{ color: theme.primary }}>{formatPrice(product.price)}</span>
             {product.originalPrice > product.price && (
-              <span className="text-xs line-through text-gray-400">{formatPrice(product.originalPrice)}</span>
+              <span className="text-xs line-through font-semibold text-red-400">{formatPrice(product.originalPrice)}</span>
             )}
           </div>
           <motion.button
@@ -157,9 +147,6 @@ const ProductCard = ({ product }) => {
           </motion.button>
         </div>
 
-        <p className="text-[10px] mt-1.5" style={{ color: theme.textMuted }}>
-          Age: {product.ageGroup}
-        </p>
       </div>
     </motion.div>
   );

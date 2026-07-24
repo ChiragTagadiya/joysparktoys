@@ -6,6 +6,7 @@ import { useTheme } from '../context/ThemeContext';
 import { useProducts } from '../context/ProductContext';
 import { ROUTES } from '../constants/routes';
 import HeroScroll from '../components/products/HeroScroll';
+import ProductGrid from '../components/products/ProductGrid';
 import CategorySection from '../components/products/CategorySection';
 import Button from '../components/common/Button';
 
@@ -45,7 +46,7 @@ const StatCard = ({ icon: Icon, value, label, color }) => (
 
 const Home = () => {
   const { theme } = useTheme();
-  const { setSelectedCategory, resetFilters, featuredProducts, bestSellers } = useProducts();
+  const { setSelectedCategory, resetFilters, featuredProducts, bestSellers, allProducts } = useProducts();
   const navigate = useNavigate();
 
   const handleShopAll = () => {
@@ -128,7 +129,7 @@ const Home = () => {
               className="flex flex-wrap gap-4 text-sm font-semibold"
               style={{ color: theme.textMuted }}
             >
-              {['✅ Free Shipping', '🔄 24-hr Refund', '� Cash on Delivery', '🇮🇳 India Shipping'].map((t) => (
+              {['✅ Free Shipping', '🔄 24-hr Refund', '💰 Cash on Delivery', '🇮🇳 India Shipping'].map((t) => (
                 <span key={t}>{t}</span>
               ))}
             </motion.div>
@@ -187,10 +188,27 @@ const Home = () => {
         </div>
       </section>
 
+      {/* All Products */}
+      {allProducts.length > 0 && (
+        <section className="py-12" style={{ background: theme.bg }}>
+          <div className="max-w-7xl mx-auto px-4">
+            <div className="flex items-center justify-between mb-6">
+              <h2 className="text-2xl md:text-3xl font-black" style={{ color: theme.text }}>🧸 All Products</h2>
+              <Button variant="secondary" size="sm" onClick={handleShopAll} iconRight={ArrowRight}>
+                View All
+              </Button>
+            </div>
+            <ProductGrid products={allProducts.slice(0, 12)} />
+          </div>
+        </section>
+      )}
+
       {/* Featured - Horizontal Scroll */}
-      <div style={{ background: theme.bg }}>
-        <HeroScroll products={featuredProducts} title="✨ Featured Picks" />
-      </div>
+      {featuredProducts.length > 0 && (
+        <div style={{ background: theme.bg }}>
+          <HeroScroll products={featuredProducts} title="✨ Featured Picks" />
+        </div>
+      )}
 
       {/* Categories */}
       <div style={{ background: theme.bg }}>
@@ -198,9 +216,11 @@ const Home = () => {
       </div>
 
       {/* Best Sellers */}
-      <div style={{ background: theme.bg }}>
-        <HeroScroll products={bestSellers} title="🔥 Best Sellers" />
-      </div>
+      {bestSellers.length > 0 && (
+        <div style={{ background: theme.bg }}>
+          <HeroScroll products={bestSellers} title="🔥 Best Sellers" />
+        </div>
+      )}
 
       {/* Promo Banner */}
       <section className="py-12">
@@ -219,14 +239,19 @@ const Home = () => {
               <p className="text-sm font-bold uppercase tracking-widest opacity-80 mb-2">Limited Time Offer</p>
               <h2 className="text-3xl md:text-5xl font-black mb-4">Up to 40% OFF<br />on Best Sellers! 🎉</h2>
               <p className="text-lg opacity-90 mb-8">Plus free shipping on orders above ₹499</p>
-              <Button
-                variant="ghost"
-                size="xl"
-                onClick={handleShopAll}
-                className="bg-white/20 hover:bg-white/30 backdrop-blur-sm border-2 border-white/50 text-white"
+              <motion.div
+                animate={{ scale: [1, 1.05, 1] }}
+                transition={{ duration: 1.5, repeat: Infinity, ease: 'easeInOut' }}
               >
-                Shop the Sale →
-              </Button>
+                <Button
+                  variant="ghost"
+                  size="xl"
+                  onClick={handleShopAll}
+                  className="bg-white/20 hover:bg-white/30 backdrop-blur-sm border-2 border-white/50 !text-white shadow-lg shadow-white/20"
+                >
+                  Shop the Sale →
+                </Button>
+              </motion.div>
             </div>
           </motion.div>
         </div>
@@ -243,7 +268,7 @@ const Home = () => {
               { icon: '🚚', title: 'Fast Delivery', desc: 'Pan-India delivery with reliable partners. Track your order in real time.' },
               { icon: '💬', title: 'Expert Curation', desc: 'Each toy is handpicked by child development experts and parents.' },
               { icon: '🔄', title: '24-hr Refund', desc: 'Wrong or damaged item? Get a full refund within 24 hours, no questions asked.' },
-              { icon: '�', title: 'Cash on Delivery', desc: 'No prepayment needed. Pay in cash when your order arrives at your door.' },
+              { icon: '💰', title: 'Cash on Delivery', desc: 'No prepayment needed. Pay in cash when your order arrives at your door.' },
             ].map(({ icon, title, desc }) => (
               <motion.div
                 key={title}

@@ -9,4 +9,6 @@ export const CATEGORIES = [
   { id: 'arts-crafts', name: 'Arts & Crafts', icon: '🎨', color: '#F97316', description: 'Drawing, painting & DIY kits' },
   { id: 'dolls', name: 'Dolls & Playsets', icon: '🪆', color: '#A855F7', description: 'Dolls, houses & accessories' },
   { id: 'musical', name: 'Musical Toys', icon: '🎵', color: '#14B8A6', description: 'Instruments & musical learning' },
+  { id: 'bath-tub', name: 'Bath Tub', icon: '🛁', color: '#0EA5E9', description: 'Bath toys & tub accessories' },
+  { id: 'die-cast-models', name: 'Die Cast Models', icon: '🏎️', color: '#DC2626', description: 'Metal die cast cars & model vehicles' },
 ];

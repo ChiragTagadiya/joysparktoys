@@ -6,6 +6,7 @@ import { ROUTES } from './constants/routes';
 import Navbar from './components/layout/Navbar';
 import Footer from './components/layout/Footer';
 import AnnouncementBar from './components/layout/AnnouncementBar';
+import ScrollToTop from './components/layout/ScrollToTop';
 import ProtectedRoute from './components/layout/ProtectedRoute';
 import CartDrawer from './components/cart/CartDrawer';
 import AuthModal from './components/auth/AuthModal';
@@ -31,6 +32,7 @@ const App = () => {
 
   return (
     <div style={{ background: theme.bg, minHeight: '100vh' }}>
+      <ScrollToTop />
       <AnnouncementBar />
       <Navbar onCartOpen={() => setCartOpen(true)} onAuthOpen={() => setAuthOpen(true)} />
 

@@ -55,6 +55,20 @@ const RefundReturnPolicy = () => {
           </section>
 
           <section>
+            <h2 className="text-lg font-black mb-2" style={{ color: theme.text }}>📹 Mandatory Unboxing Video (Important)</h2>
+            <div className="p-4 rounded-2xl border-2 border-red-200" style={{ background: '#FEF2F2' }}>
+              <div className="space-y-2 text-sm" style={{ color: '#991B1B' }}>
+                <p className="font-bold">You must record a video while opening the seal-packed box. This is mandatory for all orders.</p>
+                <p>- The video must be a single continuous recording from the moment you start opening the sealed package until the product is fully visible.</p>
+                <p>- The video must NOT be edited, cut, trimmed, combined, or modified in any way.</p>
+                <p>- If no unboxing video is recorded and shared with us at the time of raising a return/refund request, <span className="font-black">No Return / No Cancellation / No Refund</span> will be provided.</p>
+                <p>- The video must clearly show the sealed package, the process of opening, and the product inside.</p>
+                <p>- Share the unboxing video to our support email or phone when raising a complaint.</p>
+              </div>
+            </div>
+          </section>
+
+          <section>
             <h2 className="text-lg font-black mb-2" style={{ color: theme.text }}>Refunds</h2>
             <p className="text-sm leading-relaxed" style={{ color: theme.textMuted }}>
               Once your return is received and inspected, we will notify you of the approval or rejection of your refund.

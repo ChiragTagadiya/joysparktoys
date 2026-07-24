@@ -4,7 +4,7 @@ import { useTheme } from '../../context/ThemeContext';
 import { validateProduct } from '../../utils/validators';
 import { StorageService } from '../../services/storage.service';
 import { CATEGORIES } from '../../data/categories';
-import appConfig from '../../config/app.config';
+
 import Input from '../common/Input';
 import Button from '../common/Button';
 
@@ -15,6 +15,7 @@ const EMPTY_FORM = {
   stock: '', ageGroup: '', description: '', tags: '',
   featured: false, bestSeller: false, newArrival: false, images: [],
   discountLabel: '', discountStart: '', discountEnd: '',
+  rating: '', reviewCount: '',
 };
 
 const ProductForm = ({ initial = null, onSubmit, onCancel, loading }) => {
@@ -27,6 +28,8 @@ const ProductForm = ({ initial = null, onSubmit, onCancel, loading }) => {
   const viewerStripRef = useRef(null);
   const [viewerOpen, setViewerOpen] = useState(false);
   const [viewerIndex, setViewerIndex] = useState(0);
+  const [dragIdx, setDragIdx] = useState(null);
+  const [dragOverIdx, setDragOverIdx] = useState(null);
 
   const images = form.images || [];
   const remainingSlots = Math.max(0, MAX_IMAGES - images.length);
@@ -87,6 +90,21 @@ const ProductForm = ({ initial = null, onSubmit, onCancel, loading }) => {
     setForm((p) => ({ ...p, images: p.images.filter((_, i) => i !== idx) }));
   };
 
+  const handleDragStart = (idx) => setDragIdx(idx);
+  const handleDragOver = (e, idx) => { e.preventDefault(); setDragOverIdx(idx); };
+  const handleDragEnd = () => {
+    if (dragIdx !== null && dragOverIdx !== null && dragIdx !== dragOverIdx) {
+      setForm((p) => {
+        const imgs = [...(p.images || [])];
+        const [moved] = imgs.splice(dragIdx, 1);
+        imgs.splice(dragOverIdx, 0, moved);
+        return { ...p, images: imgs };
+      });
+    }
+    setDragIdx(null);
+    setDragOverIdx(null);
+  };
+
   const openViewer = (idx) => {
     setViewerIndex(idx);
     setViewerOpen(true);
@@ -108,6 +126,8 @@ const ProductForm = ({ initial = null, onSubmit, onCancel, loading }) => {
       price: Number(form.price),
       originalPrice: Number(form.originalPrice) || Number(form.price),
       stock: Number(form.stock),
+      rating: Number(form.rating) || 0,
+      reviewCount: Number(form.reviewCount) || 0,
       tags: form.tags ? form.tags.split(',').map((t) => t.trim()).filter(Boolean) : [],
     };
     onSubmit(payload);
@@ -126,8 +146,6 @@ const ProductForm = ({ initial = null, onSubmit, onCancel, loading }) => {
         <Input label="Category" name="category" value={form.category} onChange={handleChange}
           as="select" options={CATEGORIES.map((c) => ({ value: c.id, label: `${c.icon} ${c.name}` }))}
           error={errors.category} required />
-        <Input label="Age Group" name="ageGroup" value={form.ageGroup} onChange={handleChange}
-          as="select" options={appConfig.ageGroups} />
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
@@ -137,6 +155,13 @@ const ProductForm = ({ initial = null, onSubmit, onCancel, loading }) => {
           placeholder="1299" prefix="₹" hint="Leave blank if no discount" />
         <Input label="Stock Quantity" name="stock" type="number" value={form.stock} onChange={handleChange}
           placeholder="50" icon={Package} error={errors.stock} required />
+      </div>
+
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <Input label="Rating (0-5)" name="rating" type="number" value={form.rating} onChange={handleChange}
+          placeholder="4.5" hint="Product rating out of 5" />
+        <Input label="Review Count" name="reviewCount" type="number" value={form.reviewCount} onChange={handleChange}
+          placeholder="120" hint="Number of reviews" />
       </div>
 
       <Input label="Description" name="description" value={form.description} onChange={handleChange}
@@ -243,14 +268,24 @@ const ProductForm = ({ initial = null, onSubmit, onCancel, loading }) => {
           <div className="relative">
             <div className="flex gap-3 overflow-x-auto pb-2 scrollbar-hide">
               {form.images.map((url, i) => (
-                <button
-                  key={i}
-                  type="button"
-                  onClick={() => openViewer(i)}
-                  className="relative group shrink-0 w-20 h-20 rounded-2xl overflow-hidden border-2"
-                  style={{ borderColor: theme.border }}
+                <div
+                  key={url + i}
+                  draggable
+                  onDragStart={() => handleDragStart(i)}
+                  onDragOver={(e) => handleDragOver(e, i)}
+                  onDragEnd={handleDragEnd}
+                  className={`relative group shrink-0 w-20 h-20 rounded-2xl overflow-hidden border-2 cursor-grab active:cursor-grabbing transition-all ${
+                    dragOverIdx === i ? 'ring-2 ring-offset-1 scale-105' : ''
+                  } ${dragIdx === i ? 'opacity-40' : ''}`}
+                  style={{ borderColor: dragOverIdx === i ? theme.primary : theme.border, ringColor: theme.primary }}
                 >
-                  <img src={url} alt="" className="w-full h-full object-cover" onError={(e) => { e.target.src = 'https://placehold.co/80x80?text=Err'; }} />
+                  <button
+                    type="button"
+                    onClick={() => openViewer(i)}
+                    className="w-full h-full"
+                  >
+                    <img src={url} alt="" className="w-full h-full object-cover" onError={(e) => { e.target.src = 'https://placehold.co/80x80?text=Err'; }} />
+                  </button>
                   <button
                     type="button"
                     onClick={(e) => { e.stopPropagation(); removeImage(i); }}
@@ -258,7 +293,8 @@ const ProductForm = ({ initial = null, onSubmit, onCancel, loading }) => {
                   >
                     <X size={10} />
                   </button>
-                </button>
+                  <span className="absolute bottom-0.5 left-0.5 bg-black/50 text-white text-[9px] font-bold px-1 rounded">{i + 1}</span>
+                </div>
               ))}
             </div>
           </div>
