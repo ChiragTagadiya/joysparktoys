@@ -65,7 +65,7 @@ const AuthModal = ({ isOpen, onClose, defaultTab = 'login' }) => {
 
     const ok = await register(registerForm.name, registerForm.email, registerForm.password);
     if (ok) {
-      addToast(`Welcome to Little Joy, ${registerForm.name}! 🧸`, 'success');
+      addToast(`Welcome to Joy Spark Toys, ${registerForm.name}! 🧸`, 'success');
       onClose();
     }
   };
@@ -98,9 +98,9 @@ const AuthModal = ({ isOpen, onClose, defaultTab = 'login' }) => {
               <X size={20} style={{ color: theme.text }} />
             </button>
             <div className="text-center mb-4">
-              <img src="/logo.png" alt="Little Joy Toys" className="h-16 w-auto mx-auto mb-2" />
+              <img src="/logo.png" alt="Joy Spark Toys" className="h-16 w-auto mx-auto mb-2" />
               <h2 className="text-2xl font-black" style={{ background: theme.gradient, WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
-                Little Joy
+                Joy Spark Toys
               </h2>
               <p className="text-sm mt-1" style={{ color: theme.textMuted }}>
                 {tab === 'login' ? 'Welcome back! Sign in to continue.' : 'Create your account today!'}

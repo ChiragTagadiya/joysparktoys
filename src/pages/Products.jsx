@@ -1,8 +1,10 @@
 import { useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { SlidersHorizontal, X, Search } from 'lucide-react';
+import { SlidersHorizontal, X, Search, Heart } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
 import { useProducts } from '../context/ProductContext';
+import { useCart } from '../context/CartContext';
 import ProductGrid from '../components/products/ProductGrid';
 import ProductFilters from '../components/products/ProductFilters';
 import Button from '../components/common/Button';
@@ -10,9 +12,15 @@ import Button from '../components/common/Button';
 const Products = () => {
   const { theme } = useTheme();
   const { filteredProducts, searchQuery, setSearchQuery, selectedCategory, resetFilters } = useProducts();
+  const { wishlist } = useCart();
+  const [searchParams, setSearchParams] = useSearchParams();
   const [showFilters, setShowFilters] = useState(false);
 
-  const hasFilters = searchQuery || selectedCategory;
+  const showWishlist = searchParams.get('wishlist') === 'true';
+  const displayProducts = showWishlist
+    ? filteredProducts.filter((p) => wishlist.includes(p.id))
+    : filteredProducts;
+  const hasFilters = searchQuery || selectedCategory || showWishlist;
 
   return (
     <div className="min-h-screen pt-20 pb-16" style={{ background: theme.bg }}>
@@ -20,12 +28,18 @@ const Products = () => {
         {/* Header */}
         <div className="py-8">
           <h1 className="text-3xl md:text-4xl font-black mb-2" style={{ color: theme.text }}>
-            {selectedCategory ? `${selectedCategory.replace(/-/g, ' ')}` : 'All Toys'} 🧸
+            {showWishlist ? '❤️ My Wishlist' : selectedCategory ? `${selectedCategory.replace(/-/g, ' ')}` : 'All Toys'} {!showWishlist && '🧸'}
           </h1>
           <div className="flex items-center gap-3 flex-wrap">
             <p className="text-sm" style={{ color: theme.textMuted }}>
-              Showing <span className="font-bold" style={{ color: theme.primary }}>{filteredProducts.length}</span> products
+              Showing <span className="font-bold" style={{ color: theme.primary }}>{displayProducts.length}</span> products
             </p>
+            {showWishlist && (
+              <span className="flex items-center gap-1 px-3 py-1 rounded-full text-xs font-semibold" style={{ background: '#FEE2E2', color: '#EF4444' }}>
+                <Heart size={12} fill="#EF4444" /> Wishlist
+                <button onClick={() => setSearchParams({})}><X size={12} /></button>
+              </span>
+            )}
             {searchQuery && (
               <span className="flex items-center gap-1 px-3 py-1 rounded-full text-xs font-semibold" style={{ background: `${theme.primary}15`, color: theme.primary }}>
                 <Search size={12} /> "{searchQuery}"
@@ -33,7 +47,7 @@ const Products = () => {
               </span>
             )}
             {hasFilters && (
-              <button onClick={resetFilters} className="text-xs underline font-semibold" style={{ color: theme.textMuted }}>
+              <button onClick={() => { resetFilters(); setSearchParams({}); }} className="text-xs underline font-semibold" style={{ color: theme.textMuted }}>
                 Clear all filters
               </button>
             )}
@@ -62,7 +76,7 @@ const Products = () => {
               </Button>
             </div>
 
-            <ProductGrid products={filteredProducts} />
+            <ProductGrid products={displayProducts} />
           </div>
         </div>
       </div>

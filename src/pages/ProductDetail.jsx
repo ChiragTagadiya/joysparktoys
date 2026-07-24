@@ -107,7 +107,7 @@ const ProductDetail = () => {
           {/* Info */}
           <div className="space-y-5">
             <div>
-              <p className="text-xs font-bold uppercase tracking-widest mb-2" style={{ color: theme.primary }}>{product.brand}</p>
+              {product.brand && <p className="text-xs font-bold uppercase tracking-widest mb-2" style={{ color: theme.primary }}>{product.brand}</p>}
               <h1 className="text-2xl md:text-3xl font-black leading-tight mb-3" style={{ color: theme.text }}>{product.name}</h1>
               <StarRating rating={product.rating} reviews={product.reviewCount} size={16} />
             </div>
@@ -130,7 +130,7 @@ const ProductDetail = () => {
               <span className="text-4xl font-black" style={{ color: theme.primary }}>{formatPrice(product.price)}</span>
               {product.originalPrice > product.price && (
                 <>
-                  <span className="text-xl line-through text-gray-400">{formatPrice(product.originalPrice)}</span>
+                  <span className="text-xl line-through font-semibold text-red-400">{formatPrice(product.originalPrice)}</span>
                   <span className="text-lg font-bold text-emerald-600">Save {formatPrice(product.originalPrice - product.price)}</span>
                 </>
               )}
@@ -138,10 +138,9 @@ const ProductDetail = () => {
 
             {/* Details */}
             <div className="grid grid-cols-2 gap-3 p-4 rounded-2xl" style={{ background: `${theme.primary}08` }}>
-              <div><p className="text-xs" style={{ color: theme.textMuted }}>Age Group</p><p className="font-bold text-sm" style={{ color: theme.text }}>{product.ageGroup}</p></div>
-              <div><p className="text-xs" style={{ color: theme.textMuted }}>Category</p><p className="font-bold text-sm capitalize" style={{ color: theme.text }}>{product.category}</p></div>
+              {product.category && <div><p className="text-xs" style={{ color: theme.textMuted }}>Category</p><p className="font-bold text-sm capitalize" style={{ color: theme.text }}>{product.category}</p></div>}
               <div><p className="text-xs" style={{ color: theme.textMuted }}>Availability</p><p className="font-bold text-sm" style={{ color: product.stock > 0 ? '#10B981' : '#EF4444' }}>{product.stock > 0 ? `In Stock (${product.stock})` : 'Out of Stock'}</p></div>
-              <div><p className="text-xs" style={{ color: theme.textMuted }}>Brand</p><p className="font-bold text-sm" style={{ color: theme.text }}>{product.brand}</p></div>
+              {product.brand && <div><p className="text-xs" style={{ color: theme.textMuted }}>Brand</p><p className="font-bold text-sm" style={{ color: theme.text }}>{product.brand}</p></div>}
             </div>
 
             {/* Tags */}
@@ -251,17 +250,23 @@ const ProductDetail = () => {
             style={{ color: theme.textMuted }}
           >
             {activeTab === 'description' ? (
-              <p>{product.description}</p>
+              <div className="space-y-2">
+                {product.description?.split('\n').filter(line => line.trim()).map((line, i) => (
+                  <div key={i} className="flex items-start gap-2">
+                    <span className="mt-1.5 w-2 h-2 rounded-full shrink-0" style={{ background: theme.primary }} />
+                    <span>{line.trim()}</span>
+                  </div>
+                ))}
+              </div>
             ) : (
               <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
                 {[
                   { label: 'Brand', value: product.brand },
-                  { label: 'Age Group', value: product.ageGroup },
                   { label: 'Category', value: product.category },
                   { label: 'Stock', value: `${product.stock} units` },
                   { label: 'Rating', value: `${product.rating}/5` },
                   { label: 'Reviews', value: product.reviewCount?.toLocaleString() },
-                ].map(({ label, value }) => (
+                ].filter(({ value }) => value && value !== 'undefined' && value !== '0/5').map(({ label, value }) => (
                   <div key={label} className="p-4 rounded-2xl" style={{ background: `${theme.primary}08` }}>
                     <p className="text-xs font-bold mb-1" style={{ color: theme.textMuted }}>{label}</p>
                     <p className="font-bold" style={{ color: theme.text }}>{value}</p>
