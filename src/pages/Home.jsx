@@ -1,13 +1,15 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { Sparkles, ArrowRight, Gift, Zap, Shield } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
 import { useProducts } from '../context/ProductContext';
 import { ROUTES } from '../constants/routes';
+import { MarketingService } from '../services/marketing.service';
 import HeroScroll from '../components/products/HeroScroll';
 import ProductGrid from '../components/products/ProductGrid';
 import CategorySection from '../components/products/CategorySection';
+import MarketingCarousel from '../components/marketing/MarketingCarousel';
 import Button from '../components/common/Button';
 
 const FLOATING_EMOJIS = ['🧸', '🎮', '🚀', '🎨', '🏆', '🎲', '🚗', '⭐', '🎪', '🦸'];
@@ -47,7 +49,20 @@ const StatCard = ({ icon: Icon, value, label, color }) => (
 const Home = () => {
   const { theme } = useTheme();
   const { setSelectedCategory, resetFilters, featuredProducts, bestSellers, allProducts } = useProducts();
+  const [marketingItems, setMarketingItems] = useState([]);
+  const [marketingLoading, setMarketingLoading] = useState(true);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    let mounted = true;
+    setMarketingLoading(true);
+    MarketingService.getAll().then(({ data }) => {
+      if (!mounted) return;
+      setMarketingItems(data || []);
+      setMarketingLoading(false);
+    });
+    return () => { mounted = false; };
+  }, []);
 
   const handleShopAll = () => {
     resetFilters();
@@ -56,9 +71,19 @@ const Home = () => {
 
   return (
     <div className="min-h-screen" style={{ background: theme.bg }}>
+      {/* Marketing Carousel */}
+      {!marketingLoading && marketingItems.length > 0 && (
+        <MarketingCarousel items={marketingItems} />
+      )}
+      {marketingLoading && (
+        <div className="pt-32 px-4 pb-6 max-w-7xl mx-auto">
+          <div className="w-full aspect-[16/9] md:aspect-[21/9] rounded-3xl bg-gray-200 animate-pulse" />
+        </div>
+      )}
+
       {/* Hero Section */}
       <section
-        className="relative min-h-[90vh] flex items-center overflow-hidden"
+        className="relative min-h-[90vh] flex items-center overflow-hidden pt-24"
         style={{ background: theme.heroGradient }}
       >
         {/* Floating Emojis Background */}

@@ -4,6 +4,10 @@ const BUCKET = 'assets';
 
 export const StorageService = {
   uploadImage: async (file, folder = 'products') => {
+    return StorageService.uploadFile(file, folder);
+  },
+
+  uploadFile: async (file, folder = 'products') => {
     const ext = file.name.split('.').pop().toLowerCase();
     const safeName = `${folder}/${Date.now()}-${Math.random().toString(36).substring(2, 8)}.${ext}`;
 

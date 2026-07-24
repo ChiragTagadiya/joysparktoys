@@ -1,6 +1,6 @@
 import { useState, useEffect, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Plus, Package, ShoppingBag, Users, TrendingUp, LayoutDashboard, Tag, Bell, X } from 'lucide-react';
+import { Plus, Package, ShoppingBag, Users, TrendingUp, LayoutDashboard, Tag, Bell, Megaphone, X } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
 import { useProducts } from '../context/ProductContext';
 import { useToast } from '../context/ToastContext';
@@ -12,6 +12,7 @@ import ProductForm from '../components/admin/ProductForm';
 import ProductTable from '../components/admin/ProductTable';
 import DiscountManager from '../components/admin/DiscountManager';
 import AnnouncementManager from '../components/admin/AnnouncementManager';
+import MarketingManager from '../components/admin/MarketingManager';
 
 const StatBox = ({ icon: Icon, label, value, color, sub }) => (
   <div className="bg-white rounded-3xl p-6 shadow-sm border flex items-start gap-4" style={{ borderColor: '#E5E7EB' }}>
@@ -30,6 +31,7 @@ const TABS = [
   { id: 'dashboard',     label: 'Dashboard',     icon: LayoutDashboard },
   { id: 'orders',        label: 'Orders',        icon: ShoppingBag },
   { id: 'products',      label: 'Products',       icon: Package },
+  { id: 'marketing',     label: 'Marketing',     icon: Megaphone },
   { id: 'discounts',     label: 'Discounts',      icon: Tag },
   { id: 'announcements', label: 'Announcements',  icon: Bell },
 ];
@@ -551,6 +553,14 @@ const Admin = () => {
             <motion.div key="discounts" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}>
               <div className="bg-white rounded-3xl p-6 shadow-sm border" style={{ borderColor: theme.border }}>
                 <DiscountManager />
+              </div>
+            </motion.div>
+          )}
+
+          {activeTab === 'marketing' && (
+            <motion.div key="marketing" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}>
+              <div className="bg-white rounded-3xl p-6 shadow-sm border" style={{ borderColor: theme.border }}>
+                <MarketingManager />
               </div>
             </motion.div>
           )}
