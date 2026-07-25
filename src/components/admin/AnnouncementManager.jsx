@@ -12,6 +12,7 @@ const TYPE_OPTIONS = [
   { value: 'trending',    label: '📈 Trending',    color: '#F59E0B' },
   { value: 'new_arrival', label: '🆕 New Arrival', color: '#10B981' },
   { value: 'promo',       label: '🎁 Promo',       color: '#8B5CF6' },
+  { value: 'limited_time', label: '⏰ Limited Time', color: '#F97316' },
   { value: 'info',        label: 'ℹ️ Info',        color: '#3B82F6' },
 ];
 
@@ -153,7 +154,7 @@ const AnnouncementManager = () => {
             <input
               value={form.text}
               onChange={(e) => setForm((p) => ({ ...p, text: e.target.value }))}
-              placeholder="e.g. FREE Shipping on orders above ₹499!"
+              placeholder="e.g. FREE Shipping on all orders"
               className="w-full px-4 py-2.5 rounded-xl border text-sm focus:outline-none"
               style={{ borderColor: theme.border, color: theme.text }}
             />
@@ -178,7 +179,7 @@ const AnnouncementManager = () => {
               <input
                 value={form.emoji}
                 onChange={(e) => setForm((p) => ({ ...p, emoji: e.target.value }))}
-                placeholder="🎉"
+                placeholder="🎉  (use 🕒 for limited time)"
                 className="w-full px-3 py-2.5 rounded-xl border text-sm focus:outline-none"
                 style={{ borderColor: theme.border, color: theme.text }}
               />

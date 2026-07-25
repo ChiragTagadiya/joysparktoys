@@ -15,6 +15,7 @@ import StarRating from '../components/common/StarRating';
 import Badge from '../components/common/Badge';
 import Button from '../components/common/Button';
 import HeroScroll from '../components/products/HeroScroll';
+import SEO from '../components/common/SEO';
 
 const ProductDetail = () => {
   const { id } = useParams();
@@ -44,6 +45,32 @@ const ProductDetail = () => {
   const discount = formatDiscount(product.originalPrice, product.price);
   const inWishlist = isInWishlist(product.id);
 
+  const productJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'Product',
+    name: product.name,
+    description: product.description,
+    image: product.images,
+    sku: product.id,
+    brand: product.brand ? { '@type': 'Brand', name: product.brand } : undefined,
+    offers: {
+      '@type': 'Offer',
+      priceCurrency: 'INR',
+      price: product.price,
+      availability: product.stock > 0 ? 'https://schema.org/InStock' : 'https://schema.org/OutOfStock',
+      url: `https://joysparktoys.netlify.app/products/${product.id}`,
+    },
+    ...(product.rating && product.reviewCount
+      ? {
+          aggregateRating: {
+            '@type': 'AggregateRating',
+            ratingValue: product.rating,
+            reviewCount: product.reviewCount,
+          },
+        }
+      : {}),
+  };
+
   const handleAddToCart = () => {
     addToCart(product, quantity);
     addToast(`${product.name} added to cart! 🛒`, 'success');
@@ -56,6 +83,14 @@ const ProductDetail = () => {
 
   return (
     <div className="min-h-screen pt-20 pb-16" style={{ background: theme.bg }}>
+      <SEO
+        title={`Buy ${product.name} Online in India`}
+        description={product.description ? product.description.slice(0, 160) : `Buy ${product.name} online in India at Joy Spark Toys. Fast delivery, safe & fun toys for kids.`}
+        path={`/products/${product.id}`}
+        image={product.images?.[0]}
+        type="product"
+        jsonLd={productJsonLd}
+      />
       <div className="max-w-7xl mx-auto px-4">
         {/* Breadcrumb */}
         <div className="flex items-center gap-2 py-4 text-sm flex-wrap">

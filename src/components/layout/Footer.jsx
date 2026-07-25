@@ -10,7 +10,7 @@ const Footer = () => {
   const { theme } = useTheme();
 
   const trustBadges = [
-    { icon: Truck, label: 'Free Shipping', sub: 'Orders above ₹499' },
+    { icon: Truck, label: 'Free Shipping', sub: 'All Orders' },
     { icon: RefreshCw, label: '24hr Refund', sub: 'Damaged/Wrong items' },
     { icon: Shield, label: 'Safe Payment', sub: 'Secure transactions' },
     { icon: Headphones, label: '24/7 Support', sub: 'Always here for you' },

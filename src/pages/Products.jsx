@@ -8,6 +8,7 @@ import { useCart } from '../context/CartContext';
 import ProductGrid from '../components/products/ProductGrid';
 import ProductFilters from '../components/products/ProductFilters';
 import Button from '../components/common/Button';
+import SEO from '../components/common/SEO';
 
 const Products = () => {
   const { theme } = useTheme();
@@ -26,8 +27,20 @@ const Products = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }, [selectedCategory, sortBy, filters, searchQuery, showWishlist]);
 
+  const seoTitle = showWishlist
+    ? 'My Wishlist'
+    : selectedCategory
+      ? `${selectedCategory.replace(/-/g, ' ')} Toys Online in India`
+      : 'Shop All Toys Online in India';
+  const seoDescription = showWishlist
+    ? 'View and manage your favorite toys saved on Joy Spark Toys.'
+    : selectedCategory
+      ? `Buy the best ${selectedCategory.replace(/-/g, ' ')} toys online in India at Joy Spark Toys. Safe, fun & educational toys with fast delivery.`
+      : 'Browse our full collection of kids toys online in India. Educational toys, action figures, dolls, board games & more with fast delivery.';
+
   return (
     <div className="min-h-screen pt-20 pb-16" style={{ background: theme.bg }}>
+      <SEO title={seoTitle} description={seoDescription} path="/products" noindex={showWishlist} />
       <div className="max-w-7xl mx-auto px-4">
         {/* Header */}
         <div className="py-8">
