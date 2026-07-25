@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Clock } from 'lucide-react';
 import { AnnouncementsService } from '../../services/announcements.service';
 import { useTheme } from '../../context/ThemeContext';
 
@@ -13,8 +13,8 @@ const TYPE_STYLES = {
 };
 
 const DEFAULT_ITEMS = [
-  { id: 'def1', text: 'FREE Shipping on orders above ₹499!', emoji: '🚚', type: 'promo' },
-  { id: 'def2', text: 'Up to 40% OFF on Best Sellers!',      emoji: '🔥', type: 'discount' },
+  { id: 'def1', text: 'FREE Shipping on all orders', emoji: '🚚', type: 'promo' },
+  { id: 'def2', text: 'Up to 80% OFF on Best Sellers!',      emoji: '🔥', type: 'discount' },
   { id: 'def3', text: 'New Arrivals Every Week',              emoji: '🆕', type: 'new_arrival' },
 ];
 
@@ -96,13 +96,22 @@ const AnnouncementBar = () => {
             transition={{ duration: 0.35 }}
             className="text-xs sm:text-sm font-black tracking-wide truncate"
           >
-            {item?.emoji && (
+            {item?.emoji && item.emoji !== '?' && (
               <motion.span
                 className="mr-1 sm:mr-2 inline-block shrink-0"
                 animate={{ rotate: [0, -6, 6, 0], scale: [1, 1.08, 1, 1.04, 1] }}
                 transition={{ duration: 1.8, repeat: Infinity, ease: 'easeInOut' }}
               >
                 {item.emoji}
+              </motion.span>
+            )}
+            {(!item?.emoji || item.emoji === '?') && (
+              <motion.span
+                className="mr-1 sm:mr-2 inline-block shrink-0"
+                animate={{ rotate: [0, -6, 6, 0], scale: [1, 1.08, 1, 1.04, 1] }}
+                transition={{ duration: 1.8, repeat: Infinity, ease: 'easeInOut' }}
+              >
+                <Clock size={16} />
               </motion.span>
             )}
             <span className="inline-flex items-center gap-1 sm:gap-2 truncate">

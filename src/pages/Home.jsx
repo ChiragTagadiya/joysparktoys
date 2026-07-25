@@ -6,6 +6,7 @@ import { useTheme } from '../context/ThemeContext';
 import { useProducts } from '../context/ProductContext';
 import { ROUTES } from '../constants/routes';
 import { MarketingService } from '../services/marketing.service';
+import SEO from '../components/common/SEO';
 import HeroScroll from '../components/products/HeroScroll';
 import ProductGrid from '../components/products/ProductGrid';
 import CategorySection from '../components/products/CategorySection';
@@ -71,6 +72,11 @@ const Home = () => {
 
   return (
     <div className="min-h-screen" style={{ background: theme.bg }}>
+      <SEO
+        title="Buy Kids Toys Online in India"
+        description="Joy Spark Toys is India's fun online toy store. Shop educational toys, action figures, dolls, building blocks, board games & more with fast delivery across India."
+        path="/"
+      />
       {/* Marketing Carousel */}
       {!marketingLoading && marketingItems.length > 0 && (
         <MarketingCarousel items={marketingItems} />
@@ -262,8 +268,8 @@ const Home = () => {
             </div>
             <div className="relative z-10">
               <p className="text-sm font-bold uppercase tracking-widest opacity-80 mb-2">Limited Time Offer</p>
-              <h2 className="text-3xl md:text-5xl font-black mb-4">Up to 40% OFF<br />on Best Sellers! 🎉</h2>
-              <p className="text-lg opacity-90 mb-8">Plus free shipping on orders above ₹499</p>
+              <h2 className="text-3xl md:text-5xl font-black mb-4">Up to 80% OFF<br />on Best Sellers! 🎉</h2>
+              <p className="text-lg opacity-90 mb-8">Plus free shipping on all orders</p>
               <motion.div
                 animate={{ scale: [1, 1.05, 1] }}
                 transition={{ duration: 1.5, repeat: Infinity, ease: 'easeInOut' }}
