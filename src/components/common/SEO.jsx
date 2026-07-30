@@ -1,7 +1,7 @@
 import { Helmet } from 'react-helmet-async';
 
 const SITE_NAME = 'Joy Spark Toys';
-const SITE_URL = 'https://joysparktoys.in';
+const SITE_URL = 'https://joysparktoys.com';
 const DEFAULT_IMAGE = `${SITE_URL}/logo.png`;
 const DEFAULT_DESCRIPTION =
   'Shop the best educational, fun & safe toys for kids online in India. Huge collection of toy cars, dolls, building blocks, board games & more with fast delivery across India.';

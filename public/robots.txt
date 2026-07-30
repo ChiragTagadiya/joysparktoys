@@ -5,4 +5,4 @@ Disallow: /checkout
 Disallow: /orders
 Disallow: /profile
 
-Sitemap: https://joysparktoys.in/sitemap.xml
+Sitemap: https://joysparktoys.com/sitemap.xml

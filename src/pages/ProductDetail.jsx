@@ -49,8 +49,8 @@ const ProductDetail = () => {
     '@context': 'https://schema.org',
     '@type': 'BreadcrumbList',
     itemListElement: [
-      { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://joysparktoys.in/' },
-      { '@type': 'ListItem', position: 2, name: 'Products', item: 'https://joysparktoys.in/products' },
+      { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://joysparktoys.com/' },
+      { '@type': 'ListItem', position: 2, name: 'Products', item: 'https://joysparktoys.com/products' },
       { '@type': 'ListItem', position: 3, name: product.name },
     ],
   };
@@ -68,7 +68,7 @@ const ProductDetail = () => {
       priceCurrency: 'INR',
       price: product.price,
       availability: product.stock > 0 ? 'https://schema.org/InStock' : 'https://schema.org/OutOfStock',
-      url: `https://joysparktoys.in/products/${product.id}`,
+      url: `https://joysparktoys.com/products/${product.id}`,
       seller: { '@type': 'Organization', name: 'Joy Spark Toys' },
       shippingDetails: {
         '@type': 'OfferShippingDetails',
