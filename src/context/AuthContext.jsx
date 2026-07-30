@@ -53,15 +53,14 @@ export const AuthProvider = ({ children }) => {
         emailRedirectTo: `${SITE_URL}/`,
       },
     });
-    if (error) { setAuthError(error.message); return false; }
+    if (error) { setAuthError(error.message); return { ok: false, reason: 'error' }; }
     if (data.user && !data.session) {
-      setAuthError('Check your email to confirm your account, then log in.');
-      return false;
+      return { ok: false, reason: 'confirm_email' };
     }
     if (data.user) {
       await supabase.from('profiles').upsert({ id: data.user.id, name, role: 'customer' });
     }
-    return true;
+    return { ok: true };
   }, []);
 
   const logout = useCallback(async () => {

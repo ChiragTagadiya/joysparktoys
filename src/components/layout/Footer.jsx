@@ -65,7 +65,7 @@ const Footer = () => {
             <ul className="space-y-2.5">
               {[
                 { label: 'Shop All Toys', to: ROUTES.PRODUCTS },
-                { label: 'Best Sellers', to: `${ROUTES.PRODUCTS}?sort=best` },
+                { label: 'Best Sellers', to: `${ROUTES.PRODUCTS}?sort=best_sellers` },
                 { label: 'New Arrivals', to: `${ROUTES.PRODUCTS}?sort=newest` },
                 { label: 'My Orders', to: ROUTES.ORDERS },
                 { label: 'My Profile', to: ROUTES.PROFILE },

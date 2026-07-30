@@ -5,4 +5,4 @@ Disallow: /checkout
 Disallow: /orders
 Disallow: /profile
 
-Sitemap: https://joysparktoys.netlify.app/sitemap.xml
+Sitemap: https://joysparktoys.com/sitemap.xml

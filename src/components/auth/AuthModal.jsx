@@ -20,9 +20,10 @@ const AuthModal = ({ isOpen, onClose, defaultTab = 'login' }) => {
   const [loginForm, setLoginForm] = useState({ email: '', password: '' });
   const [registerForm, setRegisterForm] = useState({ name: '', email: '', password: '', confirmPassword: '' });
   const [errors, setErrors] = useState({});
+  const [inlineMsg, setInlineMsg] = useState(null);
 
   useEffect(() => {
-    if (isOpen) { clearError(); setErrors({}); }
+    if (isOpen) { clearError(); setErrors({}); setInlineMsg(null); }
   }, [isOpen, tab, clearError]);
 
   const handleLoginChange = (e) => {
@@ -47,6 +48,8 @@ const AuthModal = ({ isOpen, onClose, defaultTab = 'login' }) => {
     if (ok) {
       addToast('Welcome back! 🎉', 'success');
       onClose();
+    } else {
+      setInlineMsg(null);
     }
   };
 
@@ -63,10 +66,14 @@ const AuthModal = ({ isOpen, onClose, defaultTab = 'login' }) => {
     if (confirmErr) newErrors.confirmPassword = confirmErr;
     if (Object.keys(newErrors).length) { setErrors(newErrors); return; }
 
-    const ok = await register(registerForm.name, registerForm.email, registerForm.password);
-    if (ok) {
+    const result = await register(registerForm.name, registerForm.email, registerForm.password);
+    if (result?.ok || result === true) {
       addToast(`Welcome to Joy Spark Toys, ${registerForm.name}! 🧸`, 'success');
       onClose();
+    } else if (result?.reason === 'confirm_email') {
+      setInlineMsg({ type: 'success', text: 'Check your email to confirm your account, then log in.' });
+    } else {
+      setInlineMsg(null);
     }
   };
 
@@ -127,17 +134,6 @@ const AuthModal = ({ isOpen, onClose, defaultTab = 'login' }) => {
 
           {/* Form */}
           <div className="px-6 py-5">
-            {authError && (
-              <motion.div
-                initial={{ opacity: 0, y: -5 }}
-                animate={{ opacity: 1, y: 0 }}
-                className="mb-4 p-3 rounded-2xl text-sm font-medium"
-                style={{ background: '#FEF2F2', color: '#B91C1C', border: '1px solid #FCA5A5' }}
-              >
-                ⚠️ {authError}
-              </motion.div>
-            )}
-
             <AnimatePresence mode="wait">
               {tab === 'login' ? (
                 <motion.form key="login" initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: 20 }} onSubmit={handleLogin} className="space-y-4">
@@ -151,6 +147,16 @@ const AuthModal = ({ isOpen, onClose, defaultTab = 'login' }) => {
                       }
                     />
                   </div>
+                  {authError && (
+                    <motion.div
+                      initial={{ opacity: 0, y: -5 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      className="p-3 rounded-2xl text-sm font-medium"
+                      style={{ background: '#FEF2F2', color: '#B91C1C', border: '1px solid #FCA5A5' }}
+                    >
+                      ⚠️ {authError}
+                    </motion.div>
+                  )}
                   <Button type="submit" variant="primary" fullWidth size="lg" loading={loading} icon={Sparkles}>
                     Sign In
                   </Button>
@@ -165,6 +171,30 @@ const AuthModal = ({ isOpen, onClose, defaultTab = 'login' }) => {
                   <Input label="Email Address" name="email" type="email" value={registerForm.email} onChange={handleRegisterChange} placeholder="you@example.com" icon={Mail} error={errors.email} required />
                   <Input label="Password" name="password" type={showPass ? 'text' : 'password'} value={registerForm.password} onChange={handleRegisterChange} placeholder="Min 8 chars, 1 uppercase, 1 number" icon={Lock} error={errors.password} required />
                   <Input label="Confirm Password" name="confirmPassword" type={showConfirmPass ? 'text' : 'password'} value={registerForm.confirmPassword} onChange={handleRegisterChange} placeholder="Repeat your password" icon={Lock} error={errors.confirmPassword} required />
+                  {authError && (
+                    <motion.div
+                      initial={{ opacity: 0, y: -5 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      className="p-3 rounded-2xl text-sm font-medium"
+                      style={{ background: '#FEF2F2', color: '#B91C1C', border: '1px solid #FCA5A5' }}
+                    >
+                      ⚠️ {authError}
+                    </motion.div>
+                  )}
+                  {inlineMsg && (
+                    <motion.div
+                      initial={{ opacity: 0, y: -5 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      className="p-3 rounded-2xl text-sm font-medium"
+                      style={{
+                        background: inlineMsg.type === 'success' ? '#F0FDF4' : '#FEF2F2',
+                        color: inlineMsg.type === 'success' ? '#166534' : '#B91C1C',
+                        border: `1px solid ${inlineMsg.type === 'success' ? '#86EFAC' : '#FCA5A5'}`,
+                      }}
+                    >
+                      🎉 {inlineMsg.text}
+                    </motion.div>
+                  )}
                   <Button type="submit" variant="primary" fullWidth size="lg" loading={loading} icon={Sparkles}>
                     Create Account
                   </Button>
