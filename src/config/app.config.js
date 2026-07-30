@@ -12,7 +12,7 @@ const appConfig = {
   freeShippingAbove: 499,
   codAvailable: true,
   socialLinks: {
-    instagram: 'https://instagram.com/joysparktoys',
+    instagram: 'https://www.instagram.com/joysparktoys?igsh=OHluYTZ1ZGQ5Mmp1',
     facebook: 'https://facebook.com/joysparktoys',
     youtube: 'https://youtube.com/joysparktoys',
   },

@@ -110,7 +110,7 @@ const Navbar = ({ onCartOpen, onAuthOpen }) => {
           </nav>
 
           {/* Right Actions */}
-          <div className="ml-auto flex items-center gap-2">
+          <div className="ml-auto flex items-center gap-1 sm:gap-2 shrink-0">
             {/* Theme Switcher */}
             <div ref={themeMenuRef} className="relative">
               <motion.button
@@ -181,8 +181,8 @@ const Navbar = ({ onCartOpen, onAuthOpen }) => {
                 <motion.span
                   initial={{ scale: 0 }}
                   animate={{ scale: 1 }}
-                  className="absolute -top-1 -right-1 w-5 h-5 text-[10px] font-bold text-white rounded-full flex items-center justify-center"
-                  style={{ background: theme.gradient }}
+                  className="absolute -top-1.5 -right-1.5 min-w-[20px] h-5 px-1 text-[11px] font-black text-white rounded-full flex items-center justify-center shadow-lg"
+                  style={{ background: '#EF4444', border: '2px solid white' }}
                 >
                   {cartSummary.totalItems}
                 </motion.span>
@@ -201,8 +201,8 @@ const Navbar = ({ onCartOpen, onAuthOpen }) => {
                   <div className="w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold text-white" style={{ background: theme.gradient }}>
                     {user.name?.charAt(0).toUpperCase()}
                   </div>
-                  <span className="hidden sm:block text-sm font-semibold" style={{ color: theme.text }}>{user.name?.split(' ')[0]}</span>
-                  <ChevronDown size={14} style={{ color: theme.textMuted }} />
+                  <span className="hidden sm:block text-sm font-semibold max-w-[80px] truncate" style={{ color: theme.text }}>{user.name?.split(' ')[0]}</span>
+                  <ChevronDown size={14} className="hidden sm:block" style={{ color: theme.textMuted }} />
                 </motion.button>
                 <AnimatePresence>
                   {userMenuOpen && (
@@ -244,10 +244,10 @@ const Navbar = ({ onCartOpen, onAuthOpen }) => {
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 onClick={onAuthOpen}
-                className="flex items-center gap-2 px-4 py-2 rounded-full text-sm font-bold text-white transition-all"
+                className="flex items-center gap-1.5 px-2.5 sm:px-4 py-2 rounded-full text-sm font-bold text-white transition-all"
                 style={{ background: theme.gradient }}
               >
-                <User size={16} /> Login
+                <User size={16} /> <span className="hidden sm:inline">Login</span>
               </motion.button>
             )}
 

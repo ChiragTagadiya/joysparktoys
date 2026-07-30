@@ -11,6 +11,7 @@ const SORT_OPTIONS = [
   { value: 'price_asc',   label: '💰 Price: Low to High' },
   { value: 'price_desc',  label: '💸 Price: High to Low' },
   { value: 'rating',      label: '⭐ Top Rated' },
+  { value: 'best_sellers', label: '🏆 Best Sellers' },
   { value: 'newest',      label: '🆕 Newest First' },
   { value: 'discount',    label: '🔥 Biggest Discount' },
 ];

@@ -45,6 +45,16 @@ const ProductDetail = () => {
   const discount = formatDiscount(product.originalPrice, product.price);
   const inWishlist = isInWishlist(product.id);
 
+  const breadcrumbJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://joysparktoys.in/' },
+      { '@type': 'ListItem', position: 2, name: 'Products', item: 'https://joysparktoys.in/products' },
+      { '@type': 'ListItem', position: 3, name: product.name },
+    ],
+  };
+
   const productJsonLd = {
     '@context': 'https://schema.org',
     '@type': 'Product',
@@ -58,7 +68,13 @@ const ProductDetail = () => {
       priceCurrency: 'INR',
       price: product.price,
       availability: product.stock > 0 ? 'https://schema.org/InStock' : 'https://schema.org/OutOfStock',
-      url: `https://joysparktoys.netlify.app/products/${product.id}`,
+      url: `https://joysparktoys.in/products/${product.id}`,
+      seller: { '@type': 'Organization', name: 'Joy Spark Toys' },
+      shippingDetails: {
+        '@type': 'OfferShippingDetails',
+        shippingDestination: { '@type': 'DefinedRegion', addressCountry: 'IN' },
+        deliveryTime: { '@type': 'ShippingDeliveryTime', handlingTime: { '@type': 'QuantitativeValue', minValue: 1, maxValue: 3, unitCode: 'DAY' }, transitTime: { '@type': 'QuantitativeValue', minValue: 3, maxValue: 7, unitCode: 'DAY' } },
+      },
     },
     ...(product.rating && product.reviewCount
       ? {
@@ -89,7 +105,8 @@ const ProductDetail = () => {
         path={`/products/${product.id}`}
         image={product.images?.[0]}
         type="product"
-        jsonLd={productJsonLd}
+        jsonLd={[productJsonLd, breadcrumbJsonLd]}
+        keywords={`buy ${product.name} online, ${product.name} price india, ${product.category} toys india, ${product.brand || 'toys'} india`}
       />
       <div className="max-w-7xl mx-auto px-4">
         {/* Breadcrumb */}
@@ -114,13 +131,13 @@ const ProductDetail = () => {
               key={selectedImg}
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              className="aspect-square rounded-3xl overflow-hidden bg-gray-100 border-2"
-              style={{ borderColor: theme.border }}
+              className="aspect-square rounded-3xl overflow-hidden border-2"
+              style={{ borderColor: theme.border, background: `${theme.primary}06` }}
             >
               <img
                 src={product.images?.[selectedImg] || 'https://placehold.co/600x600?text=No+Image'}
                 alt={product.name}
-                className="w-full h-full object-cover"
+                className="w-full h-full object-contain"
               />
             </motion.div>
             {product.images?.length > 1 && (
@@ -153,9 +170,9 @@ const ProductDetail = () => {
               {product.bestSeller && <Badge type="best">Best Seller</Badge>}
               {product.featured && <Badge type="hot">🔥 Featured</Badge>}
               {product.stock === 0 && <Badge type="outofstock">Out of Stock</Badge>}
-              {product.stock > 0 && product.stock <= 10 && (
+              {product.stock > 0 && (
                 <span className="px-2 py-0.5 rounded-full text-[10px] font-bold" style={{ background: '#FEF3C7', color: '#B45309' }}>
-                  Only {product.stock} left!
+                  🔥 Only few left!
                 </span>
               )}
             </div>
@@ -174,7 +191,7 @@ const ProductDetail = () => {
             {/* Details */}
             <div className="grid grid-cols-2 gap-3 p-4 rounded-2xl" style={{ background: `${theme.primary}08` }}>
               {product.category && <div><p className="text-xs" style={{ color: theme.textMuted }}>Category</p><p className="font-bold text-sm capitalize" style={{ color: theme.text }}>{product.category}</p></div>}
-              <div><p className="text-xs" style={{ color: theme.textMuted }}>Availability</p><p className="font-bold text-sm" style={{ color: product.stock > 0 ? '#10B981' : '#EF4444' }}>{product.stock > 0 ? `In Stock (${product.stock})` : 'Out of Stock'}</p></div>
+              <div><p className="text-xs" style={{ color: theme.textMuted }}>Availability</p><p className="font-bold text-sm" style={{ color: product.stock > 0 ? '#10B981' : '#EF4444' }}>{product.stock > 0 ? 'In Stock' : 'Out of Stock'}</p></div>
               {product.brand && <div><p className="text-xs" style={{ color: theme.textMuted }}>Brand</p><p className="font-bold text-sm" style={{ color: theme.text }}>{product.brand}</p></div>}
             </div>
 
@@ -213,7 +230,30 @@ const ProductDetail = () => {
                 >
                   <Heart size={20} fill={inWishlist ? '#EF4444' : 'none'} />
                 </button>
-                <button className="p-3 rounded-2xl border-2 transition-all hover:bg-gray-50" style={{ borderColor: theme.border, color: theme.textMuted }}>
+                <button
+                  onClick={async () => {
+                    const shareData = {
+                      title: product.name,
+                      text: `Check out ${product.name} on Joy Spark Toys!`,
+                      url: window.location.href,
+                    };
+                    try {
+                      if (navigator.share) {
+                        await navigator.share(shareData);
+                      } else {
+                        await navigator.clipboard.writeText(window.location.href);
+                        addToast('Link copied to clipboard! 📋', 'success');
+                      }
+                    } catch (err) {
+                      if (err.name !== 'AbortError') {
+                        await navigator.clipboard.writeText(window.location.href);
+                        addToast('Link copied to clipboard! 📋', 'success');
+                      }
+                    }
+                  }}
+                  className="p-3 rounded-2xl border-2 transition-all hover:bg-gray-50"
+                  style={{ borderColor: theme.border, color: theme.textMuted }}
+                >
                   <Share2 size={20} />
                 </button>
               </div>
@@ -298,7 +338,7 @@ const ProductDetail = () => {
                 {[
                   { label: 'Brand', value: product.brand },
                   { label: 'Category', value: product.category },
-                  { label: 'Stock', value: `${product.stock} units` },
+                  { label: 'Availability', value: product.stock > 0 ? 'In Stock' : 'Out of Stock' },
                   { label: 'Rating', value: `${product.rating}/5` },
                   { label: 'Reviews', value: product.reviewCount?.toLocaleString() },
                 ].filter(({ value }) => value && value !== 'undefined' && value !== '0/5').map(({ label, value }) => (

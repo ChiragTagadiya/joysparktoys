@@ -12,16 +12,22 @@ import SEO from '../components/common/SEO';
 
 const Products = () => {
   const { theme } = useTheme();
-  const { filteredProducts, searchQuery, setSearchQuery, selectedCategory, sortBy, filters, resetFilters } = useProducts();
+  const { filteredProducts, searchQuery, setSearchQuery, selectedCategory, sortBy, setSortBy, filters, resetFilters } = useProducts();
   const { wishlist } = useCart();
   const [searchParams, setSearchParams] = useSearchParams();
   const [showFilters, setShowFilters] = useState(false);
 
   const showWishlist = searchParams.get('wishlist') === 'true';
+  const sortParam = searchParams.get('sort');
   const displayProducts = showWishlist
     ? filteredProducts.filter((p) => wishlist.includes(p.id))
     : filteredProducts;
   const hasFilters = searchQuery || selectedCategory || showWishlist;
+
+  useEffect(() => {
+    if (sortParam === 'newest') setSortBy('newest');
+    else if (sortParam === 'best_sellers') setSortBy('best_sellers');
+  }, [sortParam]);
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -40,7 +46,7 @@ const Products = () => {
 
   return (
     <div className="min-h-screen pt-20 pb-16" style={{ background: theme.bg }}>
-      <SEO title={seoTitle} description={seoDescription} path="/products" noindex={showWishlist} />
+      <SEO title={seoTitle} description={seoDescription} path="/products" noindex={showWishlist} keywords={selectedCategory ? `${selectedCategory} toys india, buy ${selectedCategory} toys online, ${selectedCategory} toys for kids` : undefined} />
       <div className="max-w-7xl mx-auto px-4">
         {/* Header */}
         <div className="py-8">

@@ -70,6 +70,7 @@ export const ProductProvider = ({ children }) => {
       case 'rating':     result.sort((a, b) => b.rating - a.rating); break;
       case 'newest':     result.sort((a, b) => (b.created_at || '').localeCompare(a.created_at || '')); break;
       case 'featured':   result.sort((a, b) => (b.featured ? 1 : 0) - (a.featured ? 1 : 0)); break;
+      case 'best_sellers': result.sort((a, b) => (b.bestSeller || b.best_seller ? 1 : 0) - (a.bestSeller || a.best_seller ? 1 : 0)); break;
       case 'discount': {
         const pct = (p) => p.originalPrice > p.price ? Math.round((1 - p.price / p.originalPrice) * 100) : 0;
         result.sort((a, b) => pct(b) - pct(a));
