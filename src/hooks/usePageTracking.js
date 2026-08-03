@@ -1,6 +1,10 @@
-import { useEffect, useRef } from 'react';
+import { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import { trackPageView } from '../analytics/events';
+
+let lastTrackedPath = '';
+let lastTrackedAt = 0;
+const DEDUP_MS = 500;
 
 /**
  * Track a PageView on every React Router route change.
@@ -8,11 +12,12 @@ import { trackPageView } from '../analytics/events';
  */
 const usePageTracking = () => {
   const { pathname } = useLocation();
-  const lastPath = useRef('');
 
   useEffect(() => {
-    if (lastPath.current === pathname) return;
-    lastPath.current = pathname;
+    const now = Date.now();
+    if (pathname === lastTrackedPath && now - lastTrackedAt < DEDUP_MS) return;
+    lastTrackedPath = pathname;
+    lastTrackedAt = now;
     trackPageView();
   }, [pathname]);
 };

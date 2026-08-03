@@ -240,23 +240,15 @@ const ProductDetail = () => {
                 </button>
                 <button
                   onClick={async () => {
-                    const shareData = {
-                      title: product.name,
-                      text: `Check out ${product.name} on Joy Spark Toys!`,
-                      url: window.location.href,
-                    };
                     try {
                       if (navigator.share) {
-                        await navigator.share(shareData);
+                        await navigator.share({ url: window.location.href });
                       } else {
                         await navigator.clipboard.writeText(window.location.href);
                         addToast('Link copied to clipboard! 📋', 'success');
                       }
                     } catch (err) {
-                      if (err.name !== 'AbortError') {
-                        await navigator.clipboard.writeText(window.location.href);
-                        addToast('Link copied to clipboard! 📋', 'success');
-                      }
+                      // user cancelled share
                     }
                   }}
                   className="p-3 rounded-2xl border-2 transition-all hover:bg-gray-50"
