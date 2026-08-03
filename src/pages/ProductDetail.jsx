@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import {
@@ -11,6 +11,7 @@ import { useToast } from '../context/ToastContext';
 import { useProducts } from '../context/ProductContext';
 import { formatPrice, formatDiscount } from '../utils/formatters';
 import { ROUTES } from '../constants/routes';
+import { trackAddToCart, trackAddToWishlist, trackInitiateCheckout, trackViewContent } from '../analytics/events';
 import StarRating from '../components/common/StarRating';
 import Badge from '../components/common/Badge';
 import Button from '../components/common/Button';
@@ -29,6 +30,10 @@ const ProductDetail = () => {
   const [selectedImg, setSelectedImg] = useState(0);
   const [quantity, setQuantity] = useState(1);
   const [activeTab, setActiveTab] = useState('description');
+
+  useEffect(() => {
+    if (product) trackViewContent(product);
+  }, [product]);
 
   const related = allProducts.filter((p) => p.category === product?.category && p.id !== id).slice(0, 8);
 
@@ -89,11 +94,14 @@ const ProductDetail = () => {
 
   const handleAddToCart = () => {
     addToCart(product, quantity);
+    trackAddToCart(product, quantity);
     addToast(`${product.name} added to cart! 🛒`, 'success');
   };
 
   const handleBuyNow = () => {
     addToCart(product, quantity);
+    trackAddToCart(product, quantity);
+    trackInitiateCheckout([{ ...product, quantity }], product.price * quantity);
     navigate(ROUTES.CHECKOUT);
   };
 
@@ -220,7 +228,7 @@ const ProductDetail = () => {
                   </button>
                 </div>
                 <button
-                  onClick={() => { toggleWishlist(product.id); addToast(inWishlist ? 'Removed from wishlist' : 'Added to wishlist ❤️', 'success'); }}
+                  onClick={() => { if (!inWishlist) trackAddToWishlist(product); toggleWishlist(product.id); addToast(inWishlist ? 'Removed from wishlist' : 'Added to wishlist ❤️', 'success'); }}
                   className="p-3 rounded-2xl border-2 transition-all"
                   style={{
                     borderColor: inWishlist ? '#EF4444' : theme.border,

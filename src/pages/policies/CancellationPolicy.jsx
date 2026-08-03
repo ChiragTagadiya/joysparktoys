@@ -1,5 +1,6 @@
 import { useTheme } from '../../context/ThemeContext';
 import appConfig from '../../config/app.config';
+import SEO from '../../components/common/SEO';
 
 const CancellationPolicy = () => {
   const { theme } = useTheme();
@@ -7,6 +8,12 @@ const CancellationPolicy = () => {
 
   return (
     <div className="min-h-screen pt-36 pb-16" style={{ background: theme.bg }}>
+      <SEO
+        title="Cancellation Policy"
+        description="Joy Spark Toys cancellation policy. Cancel your toy order before it ships. Learn about our easy cancellation process for online toy purchases in India."
+        path="/cancellation-policy"
+        keywords="joy spark toys cancellation, cancel toy order india, order cancellation policy"
+      />
       <div className="max-w-4xl mx-auto px-4">
         <h1 className="text-3xl font-black mb-2" style={{ color: theme.text }}>Cancellation Policy</h1>
         <p className="text-sm mb-8" style={{ color: theme.textMuted }}>

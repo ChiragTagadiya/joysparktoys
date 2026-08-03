@@ -7,6 +7,7 @@ import { useProducts } from '../context/ProductContext';
 import { useCart } from '../context/CartContext';
 import ProductGrid from '../components/products/ProductGrid';
 import ProductFilters from '../components/products/ProductFilters';
+import { trackSearch } from '../analytics/events';
 import Button from '../components/common/Button';
 import SEO from '../components/common/SEO';
 
@@ -28,6 +29,10 @@ const Products = () => {
     if (sortParam === 'newest') setSortBy('newest');
     else if (sortParam === 'best_sellers') setSortBy('best_sellers');
   }, [sortParam]);
+
+  useEffect(() => {
+    if (searchQuery) trackSearch(searchQuery);
+  }, [searchQuery]);
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'smooth' });

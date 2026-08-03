@@ -1,11 +1,18 @@
 import { useTheme } from '../../context/ThemeContext';
 import appConfig from '../../config/app.config';
+import SEO from '../../components/common/SEO';
 
 const TermsConditions = () => {
   const { theme } = useTheme();
 
   return (
     <div className="min-h-screen pt-36 pb-16" style={{ background: theme.bg }}>
+      <SEO
+        title="Terms & Conditions"
+        description="Read the Terms & Conditions of Joy Spark Toys. Understand the rules and guidelines for using our online toy store in India."
+        path="/terms-and-conditions"
+        keywords="joy spark toys terms, toy store terms and conditions, online shopping terms india"
+      />
       <div className="max-w-4xl mx-auto px-4">
         <h1 className="text-3xl font-black mb-2" style={{ color: theme.text }}>Terms & Conditions</h1>
         <p className="text-sm mb-8" style={{ color: theme.textMuted }}>
