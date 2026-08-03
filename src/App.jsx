@@ -8,6 +8,7 @@ import Footer from './components/layout/Footer';
 import AnnouncementBar from './components/layout/AnnouncementBar';
 import ScrollToTop from './components/layout/ScrollToTop';
 import ProtectedRoute from './components/layout/ProtectedRoute';
+import usePageTracking from './hooks/usePageTracking';
 import CartDrawer from './components/cart/CartDrawer';
 import AuthModal from './components/auth/AuthModal';
 import ToastContainer from './components/common/Toast';
@@ -29,6 +30,8 @@ const App = () => {
   const { theme } = useTheme();
   const [cartOpen, setCartOpen] = useState(false);
   const [authOpen, setAuthOpen] = useState(false);
+
+  usePageTracking();
 
   return (
     <div style={{ background: theme.bg, minHeight: '100vh' }}>

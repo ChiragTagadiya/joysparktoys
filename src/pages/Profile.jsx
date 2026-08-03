@@ -10,6 +10,7 @@ import { getInitials, formatDate } from '../utils/formatters';
 import { ROUTES } from '../constants/routes';
 import Input from '../components/common/Input';
 import Button from '../components/common/Button';
+import SEO from '../components/common/SEO';
 
 const Profile = () => {
   const { theme } = useTheme();
@@ -52,6 +53,7 @@ const Profile = () => {
 
   return (
     <div className="min-h-screen pt-36 pb-16" style={{ background: theme.bg }}>
+      <SEO title="My Profile" path="/profile" noindex={true} />
       <div className="max-w-2xl mx-auto px-4">
         <h1 className="text-3xl font-black mb-8" style={{ color: theme.text }}>My Profile 👤</h1>
 

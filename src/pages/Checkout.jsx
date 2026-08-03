@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { MapPin, CreditCard, CheckCircle, Package, ArrowLeft } from 'lucide-react';
@@ -8,10 +8,14 @@ import { useAuth } from '../context/AuthContext';
 import { useToast } from '../context/ToastContext';
 import { formatPrice, displayOrderNumber } from '../utils/formatters';
 import { ROUTES } from '../constants/routes';
+import { trackAddPaymentInfo, trackInitiateCheckout, trackPurchase } from '../analytics/events';
 import { OrdersService } from '../services/orders.service';
 import AddressForm from '../components/checkout/AddressForm';
 import PaymentOptions from '../components/checkout/PaymentOptions';
 import Button from '../components/common/Button';
+import SEO from '../components/common/SEO';
+
+const CheckoutSEO = () => <SEO title="Checkout" path="/checkout" noindex={true} />;
 
 const STEPS = [
   { id: 1, label: 'Address', icon: MapPin },
@@ -30,6 +34,22 @@ const Checkout = () => {
   const [address, setAddress] = useState(null);
   const [payLoading, setPayLoading] = useState(false);
   const [placedOrder, setPlacedOrder] = useState(null);
+  const checkoutInitiated = useRef(false);
+  const purchaseTracked = useRef(false);
+
+  useEffect(() => {
+    if (cartItems.length && !checkoutInitiated.current) {
+      checkoutInitiated.current = true;
+      trackInitiateCheckout(cartItems, cartSummary.total);
+    }
+  }, [cartItems, cartSummary.total]);
+
+  useEffect(() => {
+    if (placedOrder && !purchaseTracked.current) {
+      purchaseTracked.current = true;
+      trackPurchase(placedOrder);
+    }
+  }, [placedOrder]);
 
   const handleAddressSubmit = (addr) => {
     setAddress(addr);
@@ -39,6 +59,12 @@ const Checkout = () => {
 
   const handlePayment = async (paymentInfo) => {
     setPayLoading(true);
+    trackAddPaymentInfo({
+      items: cartItems,
+      total: cartSummary.total,
+      paymentMethod: paymentInfo.method,
+      address: { ...address, email: user?.email },
+    });
     const { data, error } = await OrdersService.create({
       userId: user?.id,
       items: cartItems.map(({ id, name, price, images, quantity, category }) => ({ id, name, price, images, quantity, category })),
@@ -73,6 +99,7 @@ const Checkout = () => {
 
   return (
     <div className="min-h-screen pt-36 pb-16" style={{ background: theme.bg }}>
+      <CheckoutSEO />
       <div className="max-w-5xl mx-auto px-4">
         {/* Progress Steps */}
         <div className="flex items-center justify-center gap-0 mb-10">

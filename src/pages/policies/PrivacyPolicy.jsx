@@ -1,11 +1,18 @@
 import { useTheme } from '../../context/ThemeContext';
 import appConfig from '../../config/app.config';
+import SEO from '../../components/common/SEO';
 
 const PrivacyPolicy = () => {
   const { theme } = useTheme();
 
   return (
     <div className="min-h-screen pt-36 pb-16" style={{ background: theme.bg }}>
+      <SEO
+        title="Privacy Policy"
+        description="Read the Privacy Policy of Joy Spark Toys. Learn how we collect, use, and protect your personal information when you shop toys online in India."
+        path="/privacy-policy"
+        keywords="joy spark toys privacy policy, online toy store privacy, data protection india"
+      />
       <div className="max-w-4xl mx-auto px-4">
         <h1 className="text-3xl font-black mb-2" style={{ color: theme.text }}>Privacy Policy</h1>
         <p className="text-sm mb-8" style={{ color: theme.textMuted }}>

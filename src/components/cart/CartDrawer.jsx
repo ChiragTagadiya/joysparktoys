@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { X, ShoppingBag, Trash2, Plus, Minus, ShoppingCart } from 'lucide-react';
@@ -7,6 +7,7 @@ import { useCart } from '../../context/CartContext';
 import { useAuth } from '../../context/AuthContext';
 import { formatPrice } from '../../utils/formatters';
 import { ROUTES } from '../../constants/routes';
+import { trackViewCart } from '../../analytics/events';
 import Button from '../common/Button';
 
 const CartItem = ({ item }) => {
@@ -60,6 +61,17 @@ const CartDrawer = ({ isOpen, onClose, onAuthRequired }) => {
   const { cartItems, cartSummary, clearCart } = useCart();
   const { isAuthenticated } = useAuth();
   const navigate = useNavigate();
+  const cartTracked = useRef(false);
+
+  useEffect(() => {
+    if (isOpen && cartItems.length && !cartTracked.current) {
+      cartTracked.current = true;
+      trackViewCart(cartItems);
+    }
+    if (!isOpen) {
+      cartTracked.current = false;
+    }
+  }, [isOpen, cartItems]);
 
   useEffect(() => {
     if (isOpen) document.body.style.overflow = 'hidden';

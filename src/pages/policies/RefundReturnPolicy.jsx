@@ -1,5 +1,6 @@
 import { useTheme } from '../../context/ThemeContext';
 import appConfig from '../../config/app.config';
+import SEO from '../../components/common/SEO';
 
 const RefundReturnPolicy = () => {
   const { theme } = useTheme();
@@ -7,6 +8,12 @@ const RefundReturnPolicy = () => {
 
   return (
     <div className="min-h-screen pt-36 pb-16" style={{ background: theme.bg }}>
+      <SEO
+        title="Refund & Return Policy"
+        description="Joy Spark Toys refund & return policy. 24-hour refund guarantee on damaged or wrong items. Shop kids toys online in India with confidence."
+        path="/refund-return-policy"
+        keywords="joy spark toys refund policy, toy return policy india, 24 hour refund toys"
+      />
       <div className="max-w-4xl mx-auto px-4">
         <h1 className="text-3xl font-black mb-2" style={{ color: theme.text }}>Refund & Return Policy</h1>
         <p className="text-sm mb-8" style={{ color: theme.textMuted }}>

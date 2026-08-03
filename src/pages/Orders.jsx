@@ -9,6 +9,7 @@ import { ROUTES, getProductRoute } from '../constants/routes';
 import { OrdersService } from '../services/orders.service';
 import Button from '../components/common/Button';
 import Loader from '../components/common/Loader';
+import SEO from '../components/common/SEO';
 
 const STATUS_STYLES = {
   confirmed: { label: '✅ Confirmed', bg: '#D1FAE5', color: '#065F46' },
@@ -143,6 +144,7 @@ const Orders = () => {
 
   return (
     <div className="min-h-screen pt-36 pb-16" style={{ background: theme.bg }}>
+      <SEO title="My Orders" path="/orders" noindex={true} />
       <div className="max-w-4xl mx-auto px-4">
         <div className="flex items-center justify-between gap-4 flex-wrap mb-6">
           <h1 className="text-3xl font-black" style={{ color: theme.text }}>My Orders 📦</h1>

@@ -7,6 +7,7 @@ import { useCart } from '../../context/CartContext';
 import { useToast } from '../../context/ToastContext';
 import { formatPrice } from '../../utils/formatters';
 import { getProductRoute } from '../../constants/routes';
+import { trackAddToCart, trackAddToWishlist } from '../../analytics/events';
 import StarRating from '../common/StarRating';
 import Badge from '../common/Badge';
 import Button from '../common/Button';
@@ -26,11 +27,13 @@ const ProductCard = ({ product }) => {
     e.stopPropagation();
     if (isOOS) return;
     addToCart(product);
+    trackAddToCart(product);
     addToast(`${product.name} added to cart! 🛒`, 'success');
   };
 
   const handleWishlist = (e) => {
     e.stopPropagation();
+    if (!inWishlist) trackAddToWishlist(product);
     toggleWishlist(product.id);
     addToast(inWishlist ? 'Removed from wishlist' : 'Added to wishlist ❤️', inWishlist ? 'info' : 'success');
   };

@@ -9,6 +9,7 @@ import { ToastProvider } from './context/ToastContext';
 import { AuthProvider } from './context/AuthContext';
 import { CartProvider } from './context/CartContext';
 import { ProductProvider } from './context/ProductContext';
+import { initializeAnalytics } from './analytics';
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
@@ -29,3 +30,5 @@ createRoot(document.getElementById('root')).render(
     </HelmetProvider>
   </StrictMode>,
 );
+
+initializeAnalytics();
