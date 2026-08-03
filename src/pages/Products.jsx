@@ -59,9 +59,6 @@ const Products = () => {
             {showWishlist ? '❤️ My Wishlist' : selectedCategory ? `${selectedCategory.replace(/-/g, ' ')}` : 'All Toys'} {!showWishlist && '🧸'}
           </h1>
           <div className="flex items-center gap-3 flex-wrap">
-            <p className="text-sm" style={{ color: theme.textMuted }}>
-              Showing <span className="font-bold" style={{ color: theme.primary }}>{displayProducts.length}</span> products
-            </p>
             {showWishlist && (
               <span className="flex items-center gap-1 px-3 py-1 rounded-full text-xs font-semibold" style={{ background: '#FEE2E2', color: '#EF4444' }}>
                 <Heart size={12} fill="#EF4444" /> Wishlist
