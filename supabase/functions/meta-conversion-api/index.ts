@@ -1,7 +1,7 @@
 // @ts-nocheck
 import { serve } from 'https://deno.land/std@0.224.0/http/server.ts';
 
-const PIXEL_ID = '2505782873168327';
+const PIXEL_ID = '1469475641884487';
 const GRAPH_API_VERSION = 'v23.0';
 
 const CORS_HEADERS = {
