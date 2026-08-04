@@ -25,22 +25,25 @@ const loadScript = (): void => {
 /** Initialize the Meta Pixel once and prevent duplicate loads. */
 export const initMetaPixel = (): void => {
   if (!IS_BROWSER || isInitialized) return;
+  const w = window as any;
+  // If the base code from index.html already initialized fbq, just mark as ready.
+  if (typeof w.fbq === 'function') {
+    isInitialized = true;
+    return;
+  }
   withCatch(() => {
-    const w = window as any;
-    if (typeof w.fbq !== 'function') {
-      w.fbq = function (...args: any[]) {
-        if (w.fbq.callMethod) {
-          w.fbq.callMethod.apply(w.fbq, args);
-        } else {
-          w.fbq.queue.push(args);
-        }
-      };
-      if (!w._fbq) w._fbq = w.fbq;
-      w.fbq.push = w.fbq;
-      w.fbq.loaded = true;
-      w.fbq.version = '2.0';
-      w.fbq.queue = [];
-    }
+    w.fbq = function (...args: any[]) {
+      if (w.fbq.callMethod) {
+        w.fbq.callMethod.apply(w.fbq, args);
+      } else {
+        w.fbq.queue.push(args);
+      }
+    };
+    if (!w._fbq) w._fbq = w.fbq;
+    w.fbq.push = w.fbq;
+    w.fbq.loaded = true;
+    w.fbq.version = '2.0';
+    w.fbq.queue = [];
     loadScript();
     w.fbq('init', META_PIXEL_ID);
     isInitialized = true;
