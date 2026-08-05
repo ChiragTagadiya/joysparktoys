@@ -6,7 +6,7 @@ const PrivacyPolicy = () => {
   const { theme } = useTheme();
 
   return (
-    <div className="min-h-screen pt-36 pb-16" style={{ background: theme.bg }}>
+    <div className="min-h-screen pt-48 md:pt-36 pb-16" style={{ background: theme.bg }}>
       <SEO
         title="Privacy Policy"
         description="Read the Privacy Policy of Joy Spark Toys. Learn how we collect, use, and protect your personal information when you shop toys online in India."

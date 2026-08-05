@@ -106,7 +106,7 @@ const AuthModal = ({ isOpen, onClose, defaultTab = 'login' }) => {
             </button>
             <div className="text-center mb-4">
               <img src="/logo.png" alt="Joy Spark Toys" className="h-16 w-auto mx-auto mb-2" />
-              <h2 className="text-2xl font-black" style={{ background: theme.gradient, WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
+              <h2 className="text-2xl font-black text-gradient" style={{ background: theme.gradient }}>
                 Joy Spark Toys
               </h2>
               <p className="text-sm mt-1" style={{ color: theme.textMuted }}>

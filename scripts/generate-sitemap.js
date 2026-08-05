@@ -8,7 +8,7 @@ import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
-const SITE_URL = 'https://joysparktoys.netlify.app';
+const SITE_URL = 'https://joysparktoys.com';
 
 const loadEnv = () => {
   try {
@@ -54,7 +54,10 @@ const run = async () => {
   }
 
   const urls = [
-    ...STATIC_PAGES.map((p) => `  <url>\n    <loc>${SITE_URL}${p.loc}</loc>\n    <changefreq>${p.changefreq}</changefreq>\n    <priority>${p.priority}</priority>\n  </url>`),
+    ...STATIC_PAGES.map((p) => {
+      const today = new Date().toISOString().split('T')[0];
+      return `  <url>\n    <loc>${SITE_URL}${p.loc}</loc>\n    <lastmod>${today}</lastmod>\n    <changefreq>${p.changefreq}</changefreq>\n    <priority>${p.priority}</priority>\n  </url>`;
+    }),
     ...(products || []).map((p) => {
       const lastmod = p.updated_at ? new Date(p.updated_at).toISOString().split('T')[0] : undefined;
       return `  <url>\n    <loc>${SITE_URL}/products/${p.id}</loc>${lastmod ? `\n    <lastmod>${lastmod}</lastmod>` : ''}\n    <changefreq>weekly</changefreq>\n    <priority>0.7</priority>\n  </url>`;

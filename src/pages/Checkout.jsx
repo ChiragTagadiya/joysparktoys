@@ -98,7 +98,7 @@ const Checkout = () => {
   }
 
   return (
-    <div className="min-h-screen pt-36 pb-16" style={{ background: theme.bg }}>
+    <div className="min-h-screen pt-48 md:pt-36 pb-16" style={{ background: theme.bg }}>
       <CheckoutSEO />
       <div className="max-w-5xl mx-auto px-4">
         {/* Progress Steps */}

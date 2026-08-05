@@ -12,6 +12,7 @@ import usePageTracking from './hooks/usePageTracking';
 import CartDrawer from './components/cart/CartDrawer';
 import AuthModal from './components/auth/AuthModal';
 import ToastContainer from './components/common/Toast';
+import WhatsAppButton from './components/common/WhatsAppButton';
 
 import Home from './pages/Home';
 import Products from './pages/Products';
@@ -98,6 +99,7 @@ const App = () => {
       />
 
       <ToastContainer />
+      <WhatsAppButton />
     </div>
   );
 };

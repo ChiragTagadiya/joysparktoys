@@ -106,7 +106,7 @@ const ProductDetail = () => {
   };
 
   return (
-    <div className="min-h-screen pt-20 pb-16" style={{ background: theme.bg }}>
+    <div className="min-h-screen pt-48 md:pt-36 pb-16" style={{ background: theme.bg }}>
       <SEO
         title={`Buy ${product.name} Online in India`}
         description={product.description ? product.description.slice(0, 160) : `Buy ${product.name} online in India at Joy Spark Toys. Fast delivery, safe & fun toys for kids.`}

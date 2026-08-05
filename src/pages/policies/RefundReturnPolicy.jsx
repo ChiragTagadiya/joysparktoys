@@ -7,7 +7,7 @@ const RefundReturnPolicy = () => {
   const hours = appConfig.refundPolicyHours || 24;
 
   return (
-    <div className="min-h-screen pt-36 pb-16" style={{ background: theme.bg }}>
+    <div className="min-h-screen pt-48 md:pt-36 pb-16" style={{ background: theme.bg }}>
       <SEO
         title="Refund & Return Policy"
         description="Joy Spark Toys refund & return policy. 24-hour refund guarantee on damaged or wrong items. Shop kids toys online in India with confidence."

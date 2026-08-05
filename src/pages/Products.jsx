@@ -50,7 +50,7 @@ const Products = () => {
       : 'Browse our full collection of kids toys online in India. Educational toys, action figures, dolls, board games & more with fast delivery.';
 
   return (
-    <div className="min-h-screen pt-20 pb-16" style={{ background: theme.bg }}>
+    <div className="min-h-screen pt-48 md:pt-36 pb-16" style={{ background: theme.bg }}>
       <SEO title={seoTitle} description={seoDescription} path="/products" noindex={showWishlist} keywords={selectedCategory ? `${selectedCategory} toys india, buy ${selectedCategory} toys online, ${selectedCategory} toys for kids` : undefined} />
       <div className="max-w-7xl mx-auto px-4">
         {/* Header */}

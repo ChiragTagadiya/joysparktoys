@@ -206,7 +206,7 @@ const Admin = () => {
   };
 
   return (
-    <div className="min-h-screen pt-36 pb-16" style={{ background: theme.bg }}>
+    <div className="min-h-screen pt-48 md:pt-36 pb-16" style={{ background: theme.bg }}>
       <div className="max-w-7xl mx-auto px-4">
         {/* Header */}
         <div className="flex items-center justify-between mb-8 flex-wrap gap-4">
