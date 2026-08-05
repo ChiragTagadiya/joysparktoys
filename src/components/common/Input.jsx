@@ -22,8 +22,10 @@ const Input = ({
     inputMode,
     pattern,
     className: `
-      w-full px-4 py-2.5 rounded-xl border bg-white transition-all duration-200 text-sm
-      ${focusRing} ${Icon ? 'pl-10' : ''} ${prefix ? 'pl-14' : ''}
+      w-full py-2.5 rounded-xl border bg-white transition-all duration-200 text-sm
+      ${focusRing}
+      ${Icon && prefix ? 'pl-20' : Icon ? 'pl-10' : prefix ? 'pl-14' : 'pl-4'}
+      ${suffix ? 'pr-10' : 'pr-4'}
       ${disabled ? 'bg-gray-50 cursor-not-allowed text-gray-400' : 'text-gray-800'}
       ${className}
     `,
@@ -44,7 +46,7 @@ const Input = ({
           </div>
         )}
         {prefix && (
-          <span className="absolute left-3 top-1/2 -translate-y-1/2 text-sm font-semibold" style={{ color: theme.textMuted }}>
+          <span className={`absolute top-1/2 -translate-y-1/2 text-sm font-semibold ${Icon ? 'left-10' : 'left-3'}`} style={{ color: theme.textMuted }}>
             {prefix}
           </span>
         )}

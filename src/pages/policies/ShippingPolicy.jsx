@@ -6,7 +6,7 @@ const ShippingPolicy = () => {
   const { theme } = useTheme();
 
   return (
-    <div className="min-h-screen pt-36 pb-16" style={{ background: theme.bg }}>
+    <div className="min-h-screen pt-48 md:pt-36 pb-16" style={{ background: theme.bg }}>
       <SEO
         title="Shipping Policy"
         description="Joy Spark Toys shipping policy. Free shipping across India. Learn about delivery timelines, tracking, and shipping charges for toys ordered online."

@@ -87,9 +87,33 @@ const Home = () => {
         </div>
       )}
 
+      {/* Animated Promo Banner */}
+      <div className="overflow-hidden py-3" style={{ background: theme.gradient }}>
+        <div className="flex whitespace-nowrap animate-marquee">
+          {[...Array(2)].map((_, i) => (
+            <span key={i} className="inline-flex items-center gap-6 text-white text-sm md:text-base font-bold px-4">
+              <span>🎉 10,000+ Toys</span>
+              <span className="opacity-40">|</span>
+              <span>🧸 500+ Curated Picks</span>
+              <span className="opacity-40">|</span>
+              <span>🚗 2,000+ RC Cars</span>
+              <span className="opacity-40">|</span>
+              <span>🎮 Action Figures & Dolls</span>
+              <span className="opacity-40">|</span>
+              <span>🏆 Best Prices in India</span>
+              <span className="opacity-40">|</span>
+              <span>🚚 Free Shipping Pan-India</span>
+              <span className="opacity-40">|</span>
+              <span>💰 Cash on Delivery Available</span>
+              <span className="opacity-40 mr-6">|</span>
+            </span>
+          ))}
+        </div>
+      </div>
+
       {/* Hero Section */}
       <section
-        className="relative min-h-[90vh] flex items-center overflow-hidden pt-24"
+        className="relative min-h-[60vh] md:min-h-[90vh] flex items-center overflow-hidden pt-8 md:pt-24"
         style={{ background: theme.heroGradient }}
       >
         {/* Floating Emojis Background */}
@@ -100,7 +124,7 @@ const Home = () => {
         </div>
 
         <motion.div
-          className="relative z-10 max-w-7xl mx-auto px-4 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center pt-20"
+          className="relative z-10 max-w-7xl mx-auto px-4 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center pt-6 md:pt-20"
         >
           {/* Text */}
           <div>
@@ -123,7 +147,7 @@ const Home = () => {
               style={{ color: theme.text }}
             >
               Where
-              <span className="block" style={{ background: theme.gradient, WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
+              <span className="block text-gradient" style={{ background: theme.gradient }}>
                 Play Begins!
               </span>
               🧸
@@ -137,6 +161,16 @@ const Home = () => {
               style={{ color: theme.textMuted }}
             >
               Discover 500+ handpicked toys that spark imagination, creativity, and endless joy for children of all ages. Quality guaranteed. Delivered across India.
+            </motion.p>
+
+            <motion.p
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.35 }}
+              className="animate-gradient-text text-lg md:text-xl font-extrabold mb-4"
+              style={{ backgroundImage: 'linear-gradient(90deg, #FF6B6B, #FFD93D, #6BCB77, #4D96FF, #FF6B6B)' }}
+            >
+              🎊 10,000+ Toys &bull; 500+ Curated Picks &bull; 2,000+ RC Cars &amp; much more! 🎊
             </motion.p>
 
             <motion.div

@@ -7,7 +7,7 @@ const CancellationPolicy = () => {
   const hours = appConfig.refundPolicyHours || 24;
 
   return (
-    <div className="min-h-screen pt-36 pb-16" style={{ background: theme.bg }}>
+    <div className="min-h-screen pt-48 md:pt-36 pb-16" style={{ background: theme.bg }}>
       <SEO
         title="Cancellation Policy"
         description="Joy Spark Toys cancellation policy. Cancel your toy order before it ships. Learn about our easy cancellation process for online toy purchases in India."

@@ -143,7 +143,7 @@ const Orders = () => {
   }
 
   return (
-    <div className="min-h-screen pt-36 pb-16" style={{ background: theme.bg }}>
+    <div className="min-h-screen pt-48 md:pt-36 pb-16" style={{ background: theme.bg }}>
       <SEO title="My Orders" path="/orders" noindex={true} />
       <div className="max-w-4xl mx-auto px-4">
         <div className="flex items-center justify-between gap-4 flex-wrap mb-6">

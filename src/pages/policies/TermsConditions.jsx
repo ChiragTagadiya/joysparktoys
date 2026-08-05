@@ -6,7 +6,7 @@ const TermsConditions = () => {
   const { theme } = useTheme();
 
   return (
-    <div className="min-h-screen pt-36 pb-16" style={{ background: theme.bg }}>
+    <div className="min-h-screen pt-48 md:pt-36 pb-16" style={{ background: theme.bg }}>
       <SEO
         title="Terms & Conditions"
         description="Read the Terms & Conditions of Joy Spark Toys. Understand the rules and guidelines for using our online toy store in India."

@@ -43,8 +43,8 @@ const Footer = () => {
           {/* Brand */}
           <div>
             <div className="flex items-center gap-2 mb-4">
-              <img src="/logo.png" alt="Little Joy Toys" className="h-10 w-auto" />
-              <span className="text-2xl font-black" style={{ background: theme.gradient, WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
+              <img src="/logo.png" alt="Joy Spark Toys" className="h-10 w-auto" />
+              <span className="text-2xl font-black text-gradient" style={{ background: theme.gradient }}>
                 {appConfig.appName}
               </span>
             </div>
