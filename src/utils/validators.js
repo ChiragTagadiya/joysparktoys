@@ -15,27 +15,20 @@ export const validateEmail = (email) => {
 export const validatePhone = (phone) => {
   const cleaned = phone?.replace(/\s/g, '');
   if (!cleaned) return 'Mobile number is required';
-  if (!PHONE_REGEX.test(cleaned)) return 'Enter a valid 10-digit Indian mobile number';
+  if (!PHONE_REGEX.test(cleaned)) return 'Enter a valid 10-digit Indian mobile number (starts with 6-9)';
+  return null;
+};
+
+export const validateOtp = (otp, length = 6) => {
+  if (!otp) return 'OTP is required';
+  if (otp.length !== length) return `Enter ${length}-digit OTP`;
+  if (!/^\d+$/.test(otp)) return 'OTP must contain only digits';
   return null;
 };
 
 export const validatePincode = (pincode) => {
   if (!pincode) return 'PIN code is required';
   if (!PINCODE_REGEX.test(pincode)) return 'Enter a valid 6-digit PIN code';
-  return null;
-};
-
-export const validatePassword = (password) => {
-  if (!password) return 'Password is required';
-  if (password.length < 8) return 'Password must be at least 8 characters';
-  if (!/[A-Z]/.test(password)) return 'Password must contain at least one uppercase letter';
-  if (!/[0-9]/.test(password)) return 'Password must contain at least one number';
-  return null;
-};
-
-export const validateConfirmPassword = (password, confirmPassword) => {
-  if (!confirmPassword) return 'Please confirm your password';
-  if (password !== confirmPassword) return 'Passwords do not match';
   return null;
 };
 

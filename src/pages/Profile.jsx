@@ -1,11 +1,11 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { User, Mail, Phone, Save, LogOut, Package, ShoppingBag } from 'lucide-react';
+import { User, Phone, Save, LogOut, Package, ShoppingBag, Shield } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useTheme } from '../context/ThemeContext';
 import { useAuth } from '../context/AuthContext';
 import { useToast } from '../context/ToastContext';
-import { validateName, validatePhone } from '../utils/validators';
+import { validateName } from '../utils/validators';
 import { getInitials, formatDate } from '../utils/formatters';
 import { ROUTES } from '../constants/routes';
 import Input from '../components/common/Input';
@@ -18,7 +18,7 @@ const Profile = () => {
   const { addToast } = useToast();
   const navigate = useNavigate();
 
-  const [form, setForm] = useState({ name: user?.name || '', phone: user?.phone || '' });
+  const [form, setForm] = useState({ name: user?.name || '' });
   const [errors, setErrors] = useState({});
   const [saving, setSaving] = useState(false);
 
@@ -32,10 +32,6 @@ const Profile = () => {
     const errs = {};
     const nameErr = validateName(form.name);
     if (nameErr) errs.name = nameErr;
-    if (form.phone) {
-      const phoneErr = validatePhone(form.phone);
-      if (phoneErr) errs.phone = phoneErr;
-    }
     if (Object.keys(errs).length) { setErrors(errs); return; }
 
     setSaving(true);
@@ -55,7 +51,7 @@ const Profile = () => {
     <div className="min-h-screen pt-48 md:pt-36 pb-16" style={{ background: theme.bg }}>
       <SEO title="My Profile" path="/profile" noindex={true} />
       <div className="max-w-2xl mx-auto px-4">
-        <h1 className="text-3xl font-black mb-8" style={{ color: theme.text }}>My Profile 👤</h1>
+        <h1 className="text-3xl font-black mb-8" style={{ color: theme.text }}>My Profile</h1>
 
         {/* Avatar Card */}
         <motion.div
@@ -71,11 +67,22 @@ const Profile = () => {
             {getInitials(user?.name)}
           </div>
           <h2 className="text-2xl font-black mb-1" style={{ color: theme.text }}>{user?.name}</h2>
-          <p className="text-sm mb-2" style={{ color: theme.textMuted }}>{user?.email}</p>
+          {user?.phone && (
+            <div className="flex items-center justify-center gap-2 mb-2">
+              <Phone size={14} style={{ color: theme.primary }} />
+              <span className="text-sm font-semibold" style={{ color: theme.text }}>+91 {user.phone}</span>
+              {user.phoneVerified && (
+                <span className="flex items-center gap-1 text-xs font-semibold px-2 py-0.5 rounded-full"
+                  style={{ background: '#D1FAE5', color: '#065F46' }}>
+                  <Shield size={10} /> Verified
+                </span>
+              )}
+            </div>
+          )}
           <p className="text-xs" style={{ color: theme.textMuted }}>Member since {formatDate(user?.createdAt)}</p>
-          {user?.isAdmin && (
+          {user?.role === 'admin' && (
             <span className="inline-flex mt-3 px-3 py-1 rounded-full text-xs font-bold text-white" style={{ background: theme.gradient }}>
-              ⚡ Admin
+              Admin
             </span>
           )}
         </motion.div>
@@ -130,26 +137,23 @@ const Profile = () => {
               error={errors.name}
               required
             />
+
+            {/* Phone - Read-only verified number */}
             <div>
-              <label className="text-sm font-semibold block mb-1.5" style={{ color: theme.text }}>Email Address</label>
-              <div className="flex items-center gap-3 px-4 py-2.5 rounded-xl border" style={{ borderColor: theme.border, background: '#F9FAFB' }}>
-                <Mail size={16} style={{ color: theme.textMuted }} />
-                <span className="text-sm" style={{ color: theme.textMuted }}>{user?.email}</span>
-                <span className="ml-auto text-xs font-semibold px-2 py-0.5 rounded-full" style={{ background: '#D1FAE5', color: '#065F46' }}>Verified</span>
+              <label className="text-sm font-semibold block mb-1.5" style={{ color: theme.text }}>Mobile Number</label>
+              <div className="flex items-center gap-3 px-4 py-2.5 rounded-xl border" style={{ borderColor: theme.border, background: '#F0FDF4' }}>
+                <Phone size={16} style={{ color: theme.primary }} />
+                <span className="text-sm font-semibold" style={{ color: theme.textMuted }}>+91</span>
+                <span className="text-sm font-bold" style={{ color: theme.text }}>{user?.phone || 'Not set'}</span>
+                {user?.phoneVerified && (
+                  <span className="ml-auto flex items-center gap-1 text-xs font-semibold px-2 py-0.5 rounded-full" style={{ background: '#D1FAE5', color: '#065F46' }}>
+                    <Shield size={10} /> Verified
+                  </span>
+                )}
               </div>
-              <p className="text-xs mt-1" style={{ color: theme.textMuted }}>Email cannot be changed</p>
+              <p className="text-xs mt-1" style={{ color: theme.textMuted }}>Phone number is verified via OTP and cannot be changed</p>
             </div>
-            <Input
-              label="Mobile Number (Optional)"
-              name="phone"
-              type="tel"
-              value={form.phone}
-              onChange={handleChange}
-              icon={Phone}
-              prefix="+91"
-              error={errors.phone}
-              placeholder="10-digit mobile number"
-            />
+
             <Button type="submit" variant="primary" size="lg" loading={saving} icon={Save} fullWidth>
               Save Changes
             </Button>

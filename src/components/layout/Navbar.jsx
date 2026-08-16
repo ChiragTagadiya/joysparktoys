@@ -30,9 +30,13 @@ const Navbar = ({ onCartOpen, onAuthOpen }) => {
   const themeMenuRef = useRef(null);
 
   const debouncedSearch = useDebounce(searchQuery, 400);
+  const prevSearchRef = useRef(debouncedSearch);
 
   useEffect(() => {
-    if (debouncedSearch) navigate(ROUTES.PRODUCTS);
+    if (debouncedSearch && debouncedSearch !== prevSearchRef.current) {
+      navigate(ROUTES.PRODUCTS);
+    }
+    prevSearchRef.current = debouncedSearch;
   }, [debouncedSearch, navigate]);
 
   useEffect(() => {
@@ -215,7 +219,7 @@ const Navbar = ({ onCartOpen, onAuthOpen }) => {
                     >
                       <div className="px-4 py-3 border-b" style={{ borderColor: theme.border }}>
                         <p className="font-bold text-sm" style={{ color: theme.text }}>{user.name}</p>
-                        <p className="text-xs" style={{ color: theme.textMuted }}>{user.email}</p>
+                        <p className="text-xs" style={{ color: theme.textMuted }}>{user.phone ? `+91 ${user.phone}` : ''}</p>
                       </div>
                       {[
                         { icon: User, label: 'My Profile', to: ROUTES.PROFILE },

@@ -63,12 +63,12 @@ const Checkout = () => {
       items: cartItems,
       total: cartSummary.total,
       paymentMethod: paymentInfo.method,
-      address: { ...address, email: user?.email },
+      address: { ...address, phone: user?.phone || address.phone },
     });
     const { data, error } = await OrdersService.create({
       userId: user?.id,
       items: cartItems.map(({ id, name, price, images, quantity, category }) => ({ id, name, price, images, quantity, category })),
-      address: { ...address, email: user?.email || '' },
+      address: { ...address, phone: user?.phone || address.phone },
       paymentMethod: paymentInfo.method,
       subtotal: cartSummary.subtotal,
       shipping: cartSummary.shipping,
