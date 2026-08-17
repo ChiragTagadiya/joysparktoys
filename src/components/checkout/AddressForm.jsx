@@ -1,6 +1,7 @@
 import { useState } from 'react';
-import { MapPin, User, Phone, Building2, Home, Briefcase } from 'lucide-react';
+import { MapPin, User, Phone, Building2, Home, Briefcase, Shield } from 'lucide-react';
 import { useTheme } from '../../context/ThemeContext';
+import { useAuth } from '../../context/AuthContext';
 import { INDIAN_STATES, ADDRESS_LABELS } from '../../constants/india';
 import { validateAddress } from '../../utils/validators';
 import Input from '../common/Input';
@@ -8,9 +9,14 @@ import Button from '../common/Button';
 
 const AddressForm = ({ onSubmit, initial = {} }) => {
   const { theme } = useTheme();
+  const { user } = useAuth();
+
+  // Use verified phone from auth (non-editable), fallback to initial
+  const verifiedPhone = user?.phone || '';
+
   const [form, setForm] = useState({
-    fullName: initial.fullName || '',
-    phone: initial.phone || '',
+    fullName: initial.fullName || user?.name || '',
+    phone: verifiedPhone || initial.phone || '',
     addressLine1: initial.addressLine1 || '',
     addressLine2: initial.addressLine2 || '',
     landmark: initial.landmark || '',
@@ -24,6 +30,8 @@ const AddressForm = ({ onSubmit, initial = {} }) => {
   const handleChange = (e) => {
     const { name, value } = e.target;
     if (name === 'phone') {
+      // If phone is verified, don't allow changes
+      if (verifiedPhone) return;
       const digits = String(value || '').replace(/\D/g, '').slice(0, 10);
       setForm((p) => ({ ...p, phone: digits }));
       setErrors((p) => ({ ...p, phone: null }));
@@ -73,10 +81,35 @@ const AddressForm = ({ onSubmit, initial = {} }) => {
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <Input label="Full Name" name="fullName" value={form.fullName} onChange={handleChange}
           placeholder="As per govt. ID" icon={User} error={errors.fullName} required />
-        <Input label="Mobile Number" name="phone" type="tel" value={form.phone} onChange={handleChange}
-          placeholder="10-digit mobile" icon={Phone} prefix="+91" error={errors.phone} required
-          inputMode="numeric" pattern="[6-9][0-9]{9}" maxLength={10}
-          hint="Indian mobile number (starts with 6-9)" />
+
+        {/* Phone field - non-editable if verified via OTP */}
+        {verifiedPhone ? (
+          <div className="flex flex-col gap-1.5">
+            <label className="text-sm font-semibold" style={{ color: theme.text }}>
+              Mobile Number <span style={{ color: theme.error }}>*</span>
+            </label>
+            <div
+              className="flex items-center gap-2 px-4 py-2.5 rounded-xl border"
+              style={{ borderColor: theme.border, background: '#F0FDF4' }}
+            >
+              <Phone size={16} style={{ color: theme.primary }} />
+              <span className="text-sm font-semibold" style={{ color: theme.textMuted }}>+91</span>
+              <span className="text-sm font-bold" style={{ color: theme.text }}>{verifiedPhone}</span>
+              <span className="ml-auto flex items-center gap-1 text-xs font-semibold px-2 py-0.5 rounded-full"
+                style={{ background: '#D1FAE5', color: '#065F46' }}>
+                <Shield size={10} /> Verified
+              </span>
+            </div>
+            <p className="text-xs" style={{ color: '#059669' }}>
+              OTP verified number - used for delivery updates
+            </p>
+          </div>
+        ) : (
+          <Input label="Mobile Number" name="phone" type="tel" value={form.phone} onChange={handleChange}
+            placeholder="10-digit mobile" icon={Phone} prefix="+91" error={errors.phone} required
+            inputMode="numeric" pattern="[6-9][0-9]{9}" maxLength={10}
+            hint="Indian mobile number (starts with 6-9)" />
+        )}
       </div>
 
       <Input label="Address Line 1" name="addressLine1" value={form.addressLine1} onChange={handleChange}

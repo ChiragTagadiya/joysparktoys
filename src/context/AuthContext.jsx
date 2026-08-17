@@ -1,6 +1,6 @@
 import { createContext, useContext, useState, useEffect, useCallback } from 'react';
 import { supabase } from '../lib/supabase';
-import { SITE_URL } from '../config/supabase.config';
+import { OtpService } from '../services/otp.service';
 
 const AuthContext = createContext(null);
 
@@ -36,31 +36,57 @@ export const AuthProvider = ({ children }) => {
     return () => subscription.unsubscribe();
   }, [fetchProfile]);
 
-  const login = useCallback(async (email, password) => {
+  /** Send OTP to phone number */
+  const sendOtp = useCallback(async (phone) => {
     setAuthError(null);
-    const { error } = await supabase.auth.signInWithPassword({ email, password });
-    if (error) { setAuthError(error.message); return false; }
-    return true;
+    try {
+      const result = await OtpService.sendOtp(phone);
+      return { ok: true, sessionId: result.sessionId };
+    } catch (err) {
+      setAuthError(err.message);
+      return { ok: false };
+    }
   }, []);
 
-  const register = useCallback(async (name, email, password) => {
+  /** Verify OTP and sign in */
+  const verifyOtp = useCallback(async (phone, sessionId, otp, name = '') => {
     setAuthError(null);
-    const { data, error } = await supabase.auth.signUp({
-      email,
-      password,
-      options: {
-        data: { name },
-        emailRedirectTo: `${SITE_URL}/`,
-      },
-    });
-    if (error) { setAuthError(error.message); return { ok: false, reason: 'error' }; }
-    if (data.user && !data.session) {
-      return { ok: false, reason: 'confirm_email' };
+    try {
+      const result = await OtpService.verifyOtp(phone, sessionId, otp, name);
+
+      // Set the Supabase session from Edge Function response
+      const { data, error } = await supabase.auth.setSession({
+        access_token: result.session.access_token,
+        refresh_token: result.session.refresh_token,
+      });
+
+      if (error) {
+        setAuthError('Failed to establish session');
+        return { ok: false };
+      }
+
+      // If new user and name provided, update profile
+      if (result.isNew && name) {
+        await supabase.from('profiles').update({ name }).eq('id', data.user.id);
+      }
+
+      return { ok: true, isNew: result.isNew };
+    } catch (err) {
+      setAuthError(err.message);
+      return { ok: false };
     }
-    if (data.user) {
-      await supabase.from('profiles').upsert({ id: data.user.id, name, role: 'customer' });
+  }, []);
+
+  /** Resend OTP */
+  const resendOtp = useCallback(async (phone) => {
+    setAuthError(null);
+    try {
+      const result = await OtpService.resendOtp(phone);
+      return { ok: true, sessionId: result.sessionId };
+    } catch (err) {
+      setAuthError(err.message);
+      return { ok: false };
     }
-    return { ok: true };
   }, []);
 
   const logout = useCallback(async () => {
@@ -86,8 +112,9 @@ export const AuthProvider = ({ children }) => {
     id: authUser.id,
     email: authUser.email,
     name: profile?.name || authUser.user_metadata?.name || '',
-    phone: profile?.phone || '',
+    phone: profile?.phone || authUser.user_metadata?.phone || '',
     role: profile?.role || 'customer',
+    phoneVerified: profile?.phone_verified || false,
     createdAt: authUser.created_at,
   } : null;
 
@@ -96,7 +123,7 @@ export const AuthProvider = ({ children }) => {
   return (
     <AuthContext.Provider value={{
       user, profile, loading, authError,
-      login, register, logout, updateProfile, clearError,
+      sendOtp, verifyOtp, resendOtp, logout, updateProfile, clearError,
       isAuthenticated: !!authUser,
       isAdmin,
     }}>

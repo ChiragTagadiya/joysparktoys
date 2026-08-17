@@ -12,6 +12,11 @@ import StarRating from '../common/StarRating';
 import Badge from '../common/Badge';
 import Button from '../common/Button';
 
+const itemVariants = {
+  hidden: { opacity: 0, y: 20 },
+  show: { opacity: 1, y: 0 },
+};
+
 const ProductCard = ({ product }) => {
   const { theme } = useTheme();
   const { addToCart, toggleWishlist, isInWishlist } = useCart();
@@ -43,13 +48,30 @@ const ProductCard = ({ product }) => {
     navigate(getProductRoute(product.id));
   };
 
+  const handleCardClick = () => {
+    if (!product?.id) return;
+    navigate(getProductRoute(product.id));
+  };
+
+  const handleKeyDown = (e) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      handleCardClick();
+    }
+  };
+
   return (
     <motion.div
+      variants={itemVariants}
       whileHover={{ y: -6 }}
       onHoverStart={() => setHovered(true)}
       onHoverEnd={() => setHovered(false)}
-      onClick={() => navigate(getProductRoute(product.id))}
-      className="relative bg-white rounded-3xl overflow-hidden cursor-pointer group"
+      onClick={handleCardClick}
+      onKeyDown={handleKeyDown}
+      role="button"
+      tabIndex={0}
+      aria-label={`View ${product.name}`}
+      className="relative bg-white rounded-3xl overflow-hidden cursor-pointer group pointer-events-auto active:scale-[0.98] transition-transform"
       style={{
         boxShadow: hovered
           ? `0 20px 40px ${theme.primary}25`

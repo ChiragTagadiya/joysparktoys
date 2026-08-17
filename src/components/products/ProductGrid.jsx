@@ -7,11 +7,6 @@ const containerVariants = {
   show: { transition: { staggerChildren: 0.06 } },
 };
 
-const itemVariants = {
-  hidden: { opacity: 0, y: 20 },
-  show: { opacity: 1, y: 0 },
-};
-
 const ProductGrid = ({ products = [], emptyMessage = 'No products found' }) => {
   const { theme } = useTheme();
 
@@ -33,9 +28,7 @@ const ProductGrid = ({ products = [], emptyMessage = 'No products found' }) => {
       className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6"
     >
       {products.map((product) => (
-        <motion.div key={product.id} variants={itemVariants}>
-          <ProductCard product={product} />
-        </motion.div>
+        <ProductCard key={product.id} product={product} />
       ))}
     </motion.div>
   );
